@@ -2,8 +2,10 @@ package edu.ifba.usuarios_ms.controllers;
 
 import java.net.URI;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,12 +34,8 @@ public class UsuarioController {
     }
 
     @Operation(summary = "Cadastrar Usuário", description = "Cadastra um novo usuário no sistema")
-    @ApiResponse(
-        responseCode = "201", 
-        description = "Usuário criado com sucesso", 
-        content = @Content( mediaType = "application/json", 
-                            schema = @Schema(implementation = UsuarioResponseDTO.class)))
-    //@Secured("ROLE_PROFESSOR")
+    @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioResponseDTO.class)))
+    // @Secured("ROLE_PROFESSOR")
     @PostMapping
     public ResponseEntity<UsuarioResponseDTO> cadastrar(@RequestBody UsuarioDTO usuarioCriacaoDto,
             UriComponentsBuilder uriBuilder) {
@@ -50,14 +48,10 @@ public class UsuarioController {
 
     @Operation(summary = "Editar Usuário", description = "Edita um usuário do sistema")
     @ApiResponses(value = {
-            @ApiResponse(
-                responseCode = "200", 
-                description = "Usuário removido com sucesso",  
-                content = @Content( mediaType = "application/json", 
-                                    schema = @Schema(implementation = UsuarioResponseDTO.class))),
+            @ApiResponse(responseCode = "200", description = "Usuário removido com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-    //@Secured(value = { "ROLE_ALUNO", "ROLE_PROFESSOR" })
+    // @Secured(value = { "ROLE_ALUNO", "ROLE_PROFESSOR" })
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseDTO> editarUsuario(@PathVariable("id") Long userId,
             @RequestBody UsuarioDTO usuarioDto) {
@@ -72,13 +66,10 @@ public class UsuarioController {
 
     @Operation(summary = "Remover Usuário", description = "Remove um usuário do sistema")
     @ApiResponses(value = {
-            @ApiResponse(
-                responseCode = "200", 
-                description = "Usuário removido com sucesso", 
-                content = @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioResponseDTO.class))),
+            @ApiResponse(responseCode = "200", description = "Usuário removido com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-    //@Secured("ROLE_ADMIN")
+    // @Secured("ROLE_ADMIN")
     @DeleteMapping("/{id}")
     public ResponseEntity<UsuarioResponseDTO> remover(@PathVariable("id") Long userId) {
 
@@ -90,4 +81,10 @@ public class UsuarioController {
 
         return ResponseEntity.ok().body(usuarioResponse);
     }
+
+    @GetMapping("/porta")
+    public String retornaPorta(@Value("${local.server.port}") String porta){
+        return String.format("Requisição respondida pela instância executando na porta %s", porta);
+    }
+
 }
