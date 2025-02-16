@@ -1,9 +1,12 @@
 package edu.ifba.usuarios_ms.config.security;
 
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
 import edu.ifba.usuarios_ms.filters.SecurityFilter;
 
@@ -26,21 +30,21 @@ public class SecurityConfigurations {
   public SecurityConfigurations(SecurityFilter securityFilter) {
     this.securityFilter = securityFilter;
   }
-
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    return http.csrf(csrf -> csrf.disable())
-      .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-      .authorizeHttpRequests(req -> {
-        req.requestMatchers(HttpMethod.POST, "/login").permitAll();
-        req.requestMatchers(HttpMethod.POST, "/usuarios").permitAll();
-        req.requestMatchers("/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
-        req.anyRequest().authenticated();
-    })
-    .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-    .build();
+      return http
+          .csrf(csrf -> csrf.disable())
+          .cors(cors -> cors.disable()) // Desabilite CORS no microsserviço
+          .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+          .authorizeHttpRequests(req -> req
+              .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+              .requestMatchers(HttpMethod.POST, "/login").permitAll()
+              .requestMatchers("/api-docs/**", "/swagger-ui/**").permitAll()
+              .anyRequest().authenticated()
+          )
+          .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+          .build();
   }
-  
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
     return configuration.getAuthenticationManager();
