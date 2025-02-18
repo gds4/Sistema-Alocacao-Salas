@@ -25,7 +25,7 @@ public class JWTokenService {
     try {
       var algoritmo = Algorithm.HMAC256(secret);
       return JWT.create()
-          .withIssuer("Aula de PWEB")
+          .withIssuer("Projeto Final PWEB")
           .withSubject(usuario.getUsername())
           .withExpiresAt(dataExpiracao())
           .sign(algoritmo);
@@ -39,7 +39,7 @@ public class JWTokenService {
       var algoritmo = Algorithm.HMAC256(secret);
       return JWT.require(algoritmo)
 
-          .withIssuer("Aula de PWEB")
+          .withIssuer("Projeto Final PWEB")
           .build()
           .verify(tokenJWT)
           .getSubject();

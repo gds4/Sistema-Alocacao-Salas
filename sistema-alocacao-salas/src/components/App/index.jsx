@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Login from '../Login';
+import Dashboard from '../Dashboard';
 
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
       {!isAuthenticated ? (
         <Login onLogin={handleLogin} />
       ) : (
-        <h2>Bem-vindo, você está logado!</h2>
+        <Dashboard/>
       )}
     </div>
   );
