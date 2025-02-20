@@ -68,4 +68,14 @@ public class AulaController {
     return ResponseEntity.ok(aulas);
   }
 
+  @GetMapping("/{id}")
+  public ResponseEntity<AulaResponseDTO> obterAula(@PathVariable("id") Long id){
+
+    AulaResponseDTO aula = this.aulaService.obterAula(id);
+    
+    if(aula == null){
+      return ResponseEntity.notFound().build();
+    }
+    return ResponseEntity.ok().body(aula);
+  }
 }

@@ -15,10 +15,12 @@ public class UsuarioService {
     
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private JWTokenService tokenService;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, JWTokenService tokenService) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
     }
 
     public UsuarioResponseDTO cadastrar(UsuarioDTO usuarioCriacaoDto){
@@ -61,5 +63,16 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
         
         return new UsuarioResponseDTO(usuarioRemovido); 
+    }
+
+    public UsuarioResponseDTO dadosUsuario(String email){
+
+        Optional<Usuario> usuarioOptional = usuarioRepository.buscarUsuarioPorEmail(email);
+
+        if(usuarioOptional.isEmpty()){
+            return null;
+        }
+        return new UsuarioResponseDTO(usuarioOptional.get());
+        
     }
 }

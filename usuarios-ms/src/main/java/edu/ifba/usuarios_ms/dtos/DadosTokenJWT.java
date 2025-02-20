@@ -6,5 +6,6 @@ public record DadosTokenJWT(
   @Schema(
     name="token",
     example="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJBdWxhIGRlIFBXRUIiL..." )
-    String token
+    String token,
+    UsuarioResponseDTO usuario
 ) {}

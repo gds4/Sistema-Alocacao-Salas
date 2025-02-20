@@ -1,48 +1,67 @@
 import { useState } from "react";
-import "./Login.css"
+import { TextField, Button, Container, Typography, CircularProgress, Paper } from "@mui/material";
 import AuthService from "../../services/authService";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-function Login({ onLogin }){
+function Login({ onLogin }) {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [loading, setLoading] = useState(false)
-
-  
   const handleLogin = async (event) => {
     event.preventDefault();
     setLoading(true);
 
     try {
-      const data = await AuthService.login(email, senha); // Chama o serviço
-      localStorage.setItem('token', data.token);
-      onLogin(); // Chama a função 'onLogin' passada pelo componente pai
+      const data = await AuthService.login(email, senha);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("usuario", JSON.stringify(data.usuario));
+      onLogin();
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  return(
-    <div className="container">
-      <h2 className="text-center mb-4">Login</h2>
-      <form onSubmit={handleLogin}>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label">E-mail</label>
-          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" placeholder="Digite seu email" name="email" required />
-        </div>
+  return (
+    <Container maxWidth="md" sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+      <Paper elevation={3} sx={{ padding: 4, width: 400, textAlign: "center" }}>
+        <Typography variant="h4" gutterBottom>
+          Login
+        </Typography>
+        <form onSubmit={handleLogin}>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="E-mail"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-        <div className="mb-3">
-          <label htmlFor="senha" className="form-label">Senha</label>
-          <input type="password" value={senha} onChange={(e) => setSenha(e.target.value)} className="form-control" placeholder="Digite sua senha" name="senha" required />
-        </div>
-          <button className="btn btn-primary w-100 mb-3" type="submit" disabled={loading}>
-          {loading ? 'Carregando...' : 'Login'}
-        </button>
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Senha"
+            type="password"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            required
+          />
 
-      </form>
-    </div>
-
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            type="submit"
+            disabled={loading}
+            sx={{ mt: 2 }}
+          >
+            {loading ? <CircularProgress size={24} /> : "Login"}
+          </Button>
+        </form>
+      </Paper>
+    </Container>
   );
 }
 

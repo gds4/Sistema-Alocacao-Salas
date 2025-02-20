@@ -28,17 +28,20 @@ public class Aula {
     
     private Integer duracao;
 
+    private Long professorId;
+
     public Aula() {
     }
 
     public Aula(Long id, Long disciplinaId, Long salaId, DiaSemana diaSemana, LocalTime horarioInicio,
-        Integer duracao) {
+        Integer duracao, Long professorId) {
       this.id = id;
       this.disciplinaId = disciplinaId;
       this.salaId = salaId;
       this.diaSemana = diaSemana;
       this.horarioInicio = horarioInicio;
       this.duracao = duracao;
+      this.professorId = professorId;
     }
 
     public Aula(AulaDTO auladto){
@@ -47,6 +50,7 @@ public class Aula {
       this.diaSemana = auladto.diaSemana();
       this.horarioInicio = auladto.horarioInicio();
       this.duracao = auladto.duracao();
+      this.professorId = auladto.professorId();
     }
 
 
@@ -98,7 +102,13 @@ public class Aula {
       this.duracao = duracao;
     }
 
+    public Long getProfessorId(){
+      return professorId;
+    }
 
+    public void setProfessorId(Long professorId){
+      this.professorId = professorId;
+    }
     
    
 }

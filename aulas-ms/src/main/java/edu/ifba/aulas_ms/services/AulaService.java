@@ -85,5 +85,20 @@ public class AulaService {
         .collect(Collectors.toList());
   }
 
+  public List<AulaResponseDTO> listarAulasPorProfessor(Long idProfessor){
+    return aulaRepository.findByProfessorId(idProfessor).stream()
+    .map(AulaResponseDTO::new)
+    .collect(Collectors.toList());
+  }
+
+  public AulaResponseDTO obterAula(Long id){
+    Optional<Aula> aulaOptional = this.aulaRepository.findById(id);
+    
+    if(aulaOptional.isEmpty()){
+      return null;
+    }
+    return new AulaResponseDTO(aulaOptional.get());
+  }
+
 
 }

@@ -1,23 +1,20 @@
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import PropTypes from 'prop-types';
 
-export function SeletorSala({ rooms, selectedRoom, onRoomSelect }) {
+function SeletorSala({ rooms, selectedRoom, onRoomSelect }) {
   return (
-    <div className="mb-3">
-      <label htmlFor="roomSelect" className="form-label">Selecione a Sala:</label>
-      <select
-        id="roomSelect"
-        className="form-select"
+    <FormControl fullWidth margin="normal">
+      <InputLabel id="room-select-label">Selecione a Sala</InputLabel>
+      <Select
+        labelId="room-select-label"
         value={selectedRoom}
-        onChange={(e) => onRoomSelect(Number(e.target.value))} // Conversão para número
+        onChange={(e) => onRoomSelect(Number(e.target.value))}
       >
-        <option value="">-- Escolha uma sala --</option>
         {rooms.map(room => (
-          <option key={room.id} value={room.id}>
-            {room.nome}
-          </option>
+          <MenuItem key={room.id} value={room.id}>{room.nome}</MenuItem>
         ))}
-      </select>
-    </div>
+      </Select>
+    </FormControl>
   );
 }
 

@@ -9,7 +9,7 @@ const AuthService = {
   },
 
   getCurrentUser: () => {
-    return localStorage.getItem('token'); // Retorna o token salvo
+    return localStorage.getItem('token'); 
   }
 };
 

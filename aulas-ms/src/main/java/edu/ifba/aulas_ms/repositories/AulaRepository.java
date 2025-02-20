@@ -25,4 +25,6 @@ public interface AulaRepository extends JpaRepository<Aula, Long> {
 
     
     List<Aula> findBySalaId(Long salaId);
+    List<Aula> findByProfessorId(Long professorId);
+
 }

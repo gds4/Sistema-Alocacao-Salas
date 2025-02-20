@@ -1,52 +1,49 @@
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
-
-// Exemplo de dias da semana
-const daysOfWeek = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
-const timeSlots = ['17:00', '17:50', '18:40', '19:30', '20:20'];
-
 function TabelaAgendamento({ schedule }) {
- // Função auxiliar para encontrar uma aula por dia e horário
- function getAula(day, time) {
-  return schedule.find(aula => aula.diaSemana === day && aula.horarioInicio === time);
-}
+  const daysOfWeek = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta'];
+  const timeSlots = ['17:00', '17:50', '18:40', '19:30', '20:20'];
 
-return (
-  <table className="table table-bordered">
-    <thead>
-      <tr>
-        <th>Horário</th>
-        {daysOfWeek.map(day => (
-          <th key={day}>{day}</th>
-        ))}
-      </tr>
-    </thead>
-    <tbody>
-      {timeSlots.map(time => (
-        <tr key={time}>
-          <td>{time}</td>
-          {daysOfWeek.map(day => {
-            const aula = getAula(day, time);
-            return (
-              <td key={day}>
-                {aula ? (
-                  <div>
-                    <strong>Disciplina ID: {aula.disciplinaId}</strong>
-                    <br />
-                    Duração: {aula.duracao} min
-                  </div>
-                ) : (
-                  '-'
-                )}
-              </td>
-            );
-          })}
-        </tr>
-      ))}
-    </tbody>
-  </table>
-);
-};
+  function getAula(day, time) {
+    return schedule.find(aula => aula.diaSemana === day && aula.horarioInicio === time);
+  }
+
+  return (
+    <TableContainer component={Paper} sx={{ mt: 2 }}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Horário</TableCell>
+            {daysOfWeek.map(day => (
+              <TableCell key={day}>{day}</TableCell>
+            ))}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {timeSlots.map(time => (
+            <TableRow key={time}>
+              <TableCell>{time}</TableCell>
+              {daysOfWeek.map(day => {
+                const aula = getAula(day, time);
+                return (
+                  <TableCell key={day}>
+                    {aula ? (
+                      <div>
+                        <Typography variant="body2" fontWeight="bold">Disciplina ID: {aula.disciplinaId}</Typography>
+                        <Typography variant="body2">Duração: {aula.duracao} min</Typography>
+                      </div>
+                    ) : '-'}
+                  </TableCell>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
 
 TabelaAgendamento.propTypes = {
   schedule: PropTypes.arrayOf(

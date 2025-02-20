@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,6 +29,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class UsuarioController {
 
     private UsuarioService usuarioService;
+
 
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
@@ -87,4 +89,15 @@ public class UsuarioController {
         return String.format("Requisição respondida pela instância executando na porta %s", porta);
     }
 
+    @GetMapping("/dados-usuario")
+    public ResponseEntity<UsuarioResponseDTO> dadosUsuario(@RequestHeader("Authorization") String token) {
+        try {
+
+            UsuarioResponseDTO usuarioDTO = usuarioService.dadosUsuario(token);
+
+            return ResponseEntity.ok(usuarioDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401).body(null); // Retorna 401 se o token for inválido
+        }
+    }
 }
