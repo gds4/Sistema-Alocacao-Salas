@@ -9,6 +9,7 @@ import Sidebar from './components/Sidebar'
 import AulaCadastrar from './components/AulaCadastrar'
 import AulaEditar from './components/AulaEditar'
 import { Box } from '@mui/material'
+import Salas from './components/Salas'
 
 //<Route exact path="/filme/:id" element={<Filme/>}/>
 
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/dashboard" element={<Dashboard/>} />
           <Route exact path="/aulas/cadastrar" element={<AulaCadastrar/>}/>
           <Route exact path="/aulas/editar/:id" element={<AulaEditar/>}/>
+          <Route path="/salas" element={<Salas/>} />
           <Route path="/login" element={<Login/>} />
         </Routes>
       </Box>
