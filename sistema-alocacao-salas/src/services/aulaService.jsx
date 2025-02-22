@@ -39,7 +39,13 @@ const AulaService = {
   listarAulasPorProfessor: async (id) => {
     const response = await axios.get(`${API_URL}/professor/${id}`);
     return response.data;
+  },
+
+  listarAulasPorTurmas: async (turmaIds) => {
+    const response = await axios.post(`${API_URL}/turmas`, turmaIds);
+    return response.data;
   }
+  
 };
 
 export default AulaService;

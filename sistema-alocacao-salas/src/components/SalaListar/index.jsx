@@ -51,6 +51,7 @@ const SalasListar = () => {
   const handleEdit = (sala) => {
     setSalaAtual(sala);
     setNomeSala(sala.nome); 
+    setNomeSala(sala.nome); 
     setOpenDialogEdicao(true);
   };
 
@@ -73,9 +74,14 @@ const SalasListar = () => {
   const handleFecharDialogExclusao = () => {
     setOpenDialogExclusao(false); 
     setSalaExclusao(null); 
+    setOpenDialogExclusao(false); 
+    setSalaExclusao(null); 
   };
 
   const handleFecharDialogEdicao = () => {
+    setOpenDialogEdicao(false); 
+    setSalaAtual(null); 
+    setNomeSala(""); 
     setOpenDialogEdicao(false); 
     setSalaAtual(null); 
     setNomeSala(""); 
@@ -154,7 +160,7 @@ const SalasListar = () => {
         </DialogActions>
       </Dialog>
 
-       {/* Dialog para edição */}
+      
        <Dialog open={openDialogEdicao} onClose={handleFecharDialogEdicao}>
         <DialogTitle>Editar Sala</DialogTitle>
         <DialogContent>

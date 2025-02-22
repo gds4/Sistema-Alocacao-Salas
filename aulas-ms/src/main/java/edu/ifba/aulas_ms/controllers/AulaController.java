@@ -86,4 +86,10 @@ public class AulaController {
 
     return ResponseEntity.ok().body(aula);
   }
+
+  @PostMapping("/turmas")
+  public ResponseEntity<List<AulaResponseDTO>> listarAulasPorTurmas(@RequestBody List<Long> ids){
+    List<AulaResponseDTO> aulas = aulaService.listarAulasPorTurmas(ids);
+    return ResponseEntity.ok().body(aulas);
+  }
 }

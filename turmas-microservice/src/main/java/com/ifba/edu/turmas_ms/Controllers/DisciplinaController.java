@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ifba.edu.turmas_ms.dtos.DisciplinaDTO;
+import com.ifba.edu.turmas_ms.dtos.TurmaDTO;
 import com.ifba.edu.turmas_ms.services.DisciplinaService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -99,6 +100,17 @@ public class DisciplinaController {
         return this.disciplinaService.listarDisciplinasPorProfessor(idProfessor);
     }
 
+		
+		@GetMapping("/{disciplinaId}/turmas")
+    public ResponseEntity<List<TurmaDTO>> getTurmasByDisciplina(@PathVariable Long disciplinaId) {
+			List<TurmaDTO> turmas = disciplinaService.getTurmasByDisciplina(disciplinaId);
+      
+			if(turmas == null){
+				return ResponseEntity.notFound().build();
+			}
+
+			return ResponseEntity.ok().body(turmas);
+    }
 	
 }
 	

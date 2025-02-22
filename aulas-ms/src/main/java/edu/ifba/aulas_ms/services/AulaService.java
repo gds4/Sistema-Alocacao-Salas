@@ -100,5 +100,9 @@ public class AulaService {
     return new AulaResponseDTO(aulaOptional.get());
   }
 
+  public List<AulaResponseDTO> listarAulasPorTurmas(List<Long> ids) {
+    return this.aulaRepository.findByTurmaIdIn(ids).stream().map(AulaResponseDTO::new).collect(Collectors.toList());
+  }
+
 
 }

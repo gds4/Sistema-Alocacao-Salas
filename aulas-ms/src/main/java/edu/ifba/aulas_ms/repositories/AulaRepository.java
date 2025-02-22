@@ -1,6 +1,7 @@
 package edu.ifba.aulas_ms.repositories;
 
 import java.time.LocalTime;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,5 +27,8 @@ public interface AulaRepository extends JpaRepository<Aula, Long> {
     
     List<Aula> findBySalaId(Long salaId);
     List<Aula> findByProfessorId(Long professorId);
+
+
+    List<Aula> findByTurmaIdIn(List<Long> ids);
 
 }

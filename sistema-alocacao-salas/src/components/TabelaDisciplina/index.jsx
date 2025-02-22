@@ -1,7 +1,7 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
-function TabelaDisciplina({ schedule, turmas }) {
+function TabelaDisciplina({ agendamentos, turmas }) {
   const daysOfWeek = ['SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA'];
   const timeSlots = ['17:00', '17:50', '18:40', '19:30', '20:20'];
 
@@ -14,7 +14,7 @@ function TabelaDisciplina({ schedule, turmas }) {
 
   const getAula = (day, time) => {
     const horarioAtual = parseTime(time);
-    return schedule.find((aula) => {
+    return agendamentos.find((aula) => {
       const horarioInicio = parseTime(aula.horarioInicio.slice(0, 5));
       const horarioFim = new Date(horarioInicio.getTime() + aula.duracao * 60000);
       return aula.diaSemana === day &&
@@ -64,7 +64,7 @@ function TabelaDisciplina({ schedule, turmas }) {
 }
 
 TabelaDisciplina.propTypes = {
-  schedule: PropTypes.arrayOf(
+  agendamentos: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       turmaId: PropTypes.number.isRequired,
