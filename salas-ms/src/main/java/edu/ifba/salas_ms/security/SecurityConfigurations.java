@@ -19,7 +19,6 @@ public class SecurityConfigurations {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http.csrf(csrf -> csrf.disable())
-      .cors(cors -> cors.disable())
       .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .authorizeHttpRequests(req -> {
         req.anyRequest().permitAll();
@@ -32,6 +31,5 @@ public class SecurityConfigurations {
   public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{
     return configuration.getAuthenticationManager();
   }
-
 
 }
