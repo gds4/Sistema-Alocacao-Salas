@@ -22,7 +22,7 @@ function Sidebar() {
           <ListItemIcon><Home /></ListItemIcon>
           <ListItemText primary="Home" />
         </ListItem>
-        <ListItem button component={Link} to="/salas">
+        <ListItem button component={Link} to="/sala/listar">
           <ListItemIcon><MeetingRoom /></ListItemIcon>
           <ListItemText primary="Salas" />
         </ListItem>
