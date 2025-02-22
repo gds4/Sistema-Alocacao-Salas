@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Container, Typography, Table, TableHead, TableBody, TableRow, TableCell, Box, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from '@mui/material'; 
 import { toast } from 'react-toastify'; 
+import { useNavigate } from "react-router-dom";
 import SalaService from '../../services/salaService'; 
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 const SalasListar = () => {
+  const navigate = useNavigate();
   const [salas, setSalas] = useState([]);
   const [openDialogExclusao, setOpenDialogExclusao] = useState(false); 
   const [openDialogEdicao, setOpenDialogEdicao] = useState(false);
-  const [salaExclusao, setSalaExclusao] = useState(null); // Armazena a sala a ser excluída
-  const [salaAtual, setSalaAtual] = useState(null); // Guarda os dados da sala a ser editada
-  const [nomeSala, setNomeSala] = useState(""); // Guarda o nome da sala para edição
+  const [salaExclusao, setSalaExclusao] = useState(null); 
+  const [salaAtual, setSalaAtual] = useState(null); 
+  const [nomeSala, setNomeSala] = useState(""); 
 
 
   useEffect(() => {
@@ -41,26 +43,26 @@ const SalasListar = () => {
   };
 
   const handleConfirmarExclusao = (sala) => {
-    setSalaExclusao(sala); // Armazena a sala a ser excluída
-    setOpenDialogExclusao(true); // Abre o modal
+    setSalaExclusao(sala); 
+    setOpenDialogExclusao(true); 
    
   };
 
   const handleEdit = (sala) => {
     setSalaAtual(sala);
-    setNomeSala(sala.nome); // Preenche o campo de nome com os dados da sala
+    setNomeSala(sala.nome); 
     setOpenDialogEdicao(true);
   };
 
   const handleSave = async () => {
     try {
-      // Atualiza a sala no banco
+   
       await SalaService.atualizarSala(salaAtual.id, { nome: nomeSala });
       toast.success("Sala atualizada com sucesso!");
       setOpenDialogEdicao(false);
       setSalaAtual(null);
-      setNomeSala(""); // Limpa o campo de nome
-      // Atualiza a lista de salas
+      setNomeSala(""); 
+      
       const response = await SalaService.listarSalas();
       setSalas(response || []);
     } catch (error) {
@@ -69,14 +71,14 @@ const SalasListar = () => {
   };
 
   const handleFecharDialogExclusao = () => {
-    setOpenDialogExclusao(false); // Fecha o modal de exclusão sem excluir
-    setSalaExclusao(null); // Limpa a sala armazenada
+    setOpenDialogExclusao(false); 
+    setSalaExclusao(null); 
   };
 
   const handleFecharDialogEdicao = () => {
-    setOpenDialogEdicao(false); // Fecha o modal de edição
-    setSalaAtual(null); // Limpa a sala armazenada
-    setNomeSala(""); // Limpa o nome
+    setOpenDialogEdicao(false); 
+    setSalaAtual(null); 
+    setNomeSala(""); 
   };
 
   return (
@@ -85,6 +87,14 @@ const SalasListar = () => {
       <Typography variant="h5" gutterBottom align="center">
         Listar Salas
       </Typography>
+      <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate('/sala/cadastrar')} 
+          style={{ marginBottom: '20px' }}
+        >
+          Cadastrar Sala
+        </Button>
       {salas.length > 0 ? (
         <Table sx={{ marginTop: 2 }}>
           <TableHead>
@@ -123,7 +133,7 @@ const SalasListar = () => {
       )}
     </Box>
 
-     {/* Modal de confirmação de exclusão */}
+    
      <Dialog open={openDialogExclusao} onClose={handleFecharDialogExclusao}>
         <DialogTitle>Confirmar Exclusão</DialogTitle>
         <DialogContent>
@@ -136,7 +146,7 @@ const SalasListar = () => {
             Cancelar
           </Button>
           <Button
-            onClick={() => handleExcluir(salaExclusao?.id)} // Exclui a sala após confirmação
+            onClick={() => handleExcluir(salaExclusao?.id)} 
             color="secondary"
           >
             Excluir
@@ -156,7 +166,7 @@ const SalasListar = () => {
             fullWidth
             variant="outlined"
             value={nomeSala}
-            onChange={(e) => setNomeSala(e.target.value)} // Atualiza o nome da sala
+            onChange={(e) => setNomeSala(e.target.value)} 
           />
         </DialogContent>
         <DialogActions>

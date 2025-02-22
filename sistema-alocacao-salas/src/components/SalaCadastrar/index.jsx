@@ -29,11 +29,11 @@ const SalaCadastrar = () => {
 
     try {
       await SalaService.cadastrarSala(sala);
-      setNome(''); // Limpa o campo de descrição após o sucesso
-      setMensagemErro(''); // Limpa a mensagem de erro
-      showToastSuccess(); // Exibe o toast de sucesso
+      setNome(''); 
+      setMensagemErro(''); 
+      showToastSuccess(); 
     } catch (error) {
-      showToastError(); // Exibe o toast de erro
+      showToastError(); 
     }
   };
 
@@ -43,8 +43,8 @@ const SalaCadastrar = () => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '100vh', // 100% da altura da tela
-      width: '100%' // Ocupa toda a largura da tela
+      height: '100vh', 
+      width: '100%' 
     }}>
       <Container component="form" onSubmit={handleSubmit} maxWidth="sm" sx={{ textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>
