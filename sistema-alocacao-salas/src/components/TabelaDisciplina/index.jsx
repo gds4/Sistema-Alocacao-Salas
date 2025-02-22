@@ -1,11 +1,10 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
-function TabelaAgendamento({ schedule, turmas }) {
+function TabelaDisciplina({ schedule, turmas }) {
   const daysOfWeek = ['SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA'];
   const timeSlots = ['17:00', '17:50', '18:40', '19:30', '20:20'];
 
-  // Função para converter horário em Date
   const parseTime = (time) => {
     const [hours, minutes] = time.split(":");
     const date = new Date();
@@ -13,19 +12,14 @@ function TabelaAgendamento({ schedule, turmas }) {
     return date;
   };
 
-  // Função para encontrar a aula correspondente ao dia e horário
   const getAula = (day, time) => {
     const horarioAtual = parseTime(time);
-
     return schedule.find((aula) => {
       const horarioInicio = parseTime(aula.horarioInicio.slice(0, 5));
       const horarioFim = new Date(horarioInicio.getTime() + aula.duracao * 60000);
-
-      return (
-        aula.diaSemana === day &&
-        horarioAtual >= horarioInicio &&
-        horarioAtual < horarioFim
-      );
+      return aula.diaSemana === day &&
+             horarioAtual >= horarioInicio &&
+             horarioAtual < horarioFim;
     });
   };
 
@@ -48,15 +42,17 @@ function TabelaAgendamento({ schedule, turmas }) {
                 const aula = getAula(day, time);
                 return (
                   <TableCell key={day}>
-                  {aula ? (
-                    <div>
-                      <Typography variant="body2" fontWeight="bold">
-                        {turmas.find(t => t.id === aula.turmaId)?.disciplinaDTO.codigo || 'Código não encontrado'}
-                      </Typography>
-                      {/* ... restante do código ... */}
-                    </div>
-                  ) : '-'}
-                </TableCell>
+                    {aula ? (
+                      <div>
+                        <Typography variant="body2" fontWeight="bold">
+                          {turmas.find(t => t.id === aula.turmaId)?.disciplinaDTO.codigo || 'Código não encontrado'}
+                        </Typography>
+                        <Typography variant="caption">
+                          Professor: {aula.professorId}
+                        </Typography>
+                      </div>
+                    ) : '-'}
+                  </TableCell>
                 );
               })}
             </TableRow>
@@ -67,7 +63,7 @@ function TabelaAgendamento({ schedule, turmas }) {
   );
 }
 
-TabelaAgendamento.propTypes = {
+TabelaDisciplina.propTypes = {
   schedule: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -79,7 +75,6 @@ TabelaAgendamento.propTypes = {
       professorId: PropTypes.number.isRequired,
     })
   ).isRequired,
-
   turmas: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -93,4 +88,4 @@ TabelaAgendamento.propTypes = {
   ).isRequired,
 };
 
-export default TabelaAgendamento;
+export default TabelaDisciplina;

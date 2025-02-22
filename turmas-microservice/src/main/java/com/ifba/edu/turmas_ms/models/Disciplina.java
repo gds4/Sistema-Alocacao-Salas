@@ -45,6 +45,10 @@ public class Disciplina {
     
    // Constructors
     
+		public Disciplina(){
+			super();
+		}
+
     public Disciplina(Long id, String codigo, String nome) {
     	super();
         this.id = id;

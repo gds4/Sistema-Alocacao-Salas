@@ -1,12 +1,15 @@
 package edu.ifba.usuarios_ms.services;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.ifba.usuarios_ms.dtos.UsuarioDTO;
 import edu.ifba.usuarios_ms.dtos.UsuarioResponseDTO;
+import edu.ifba.usuarios_ms.models.Role;
 import edu.ifba.usuarios_ms.models.Usuario;
 import edu.ifba.usuarios_ms.repositories.UsuarioRepository;
 
@@ -74,5 +77,13 @@ public class UsuarioService {
         }
         return new UsuarioResponseDTO(usuarioOptional.get());
         
+    }
+
+    public List<UsuarioResponseDTO> listarUsuariosComRoleProfessor() {
+        
+        return usuarioRepository.findByRoleDescricao("ROLE_PROFESSOR")
+                                .stream()
+                                .map(UsuarioResponseDTO::new)
+                                .collect(Collectors.toList());
     }
 }

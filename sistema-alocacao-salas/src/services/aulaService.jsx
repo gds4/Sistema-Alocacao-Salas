@@ -35,6 +35,11 @@ const AulaService = {
     const response = await axios.get(`${API_URL}/${id}`);
     return response.data;
   },
+
+  listarAulasPorProfessor: async (id) => {
+    const response = await axios.get(`${API_URL}/professor/${id}`);
+    return response.data;
+  }
 };
 
 export default AulaService;

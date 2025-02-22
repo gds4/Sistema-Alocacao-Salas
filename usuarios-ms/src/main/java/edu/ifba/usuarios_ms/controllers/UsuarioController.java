@@ -1,6 +1,7 @@
 package edu.ifba.usuarios_ms.controllers;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import edu.ifba.usuarios_ms.dtos.UsuarioDTO;
 import edu.ifba.usuarios_ms.dtos.UsuarioResponseDTO;
+import edu.ifba.usuarios_ms.models.Usuario;
 import edu.ifba.usuarios_ms.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -99,5 +101,11 @@ public class UsuarioController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(401).body(null); // Retorna 401 se o token for inválido
         }
+    }
+
+     @GetMapping("/professores")
+    public List<UsuarioResponseDTO> listarUsuariosComRoleProfessor() {
+
+        return usuarioService.listarUsuariosComRoleProfessor();
     }
 }

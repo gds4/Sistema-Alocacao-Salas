@@ -10,5 +10,6 @@ import com.ifba.edu.turmas_ms.models.Turma;
 @Repository
 public interface TurmaRepository extends JpaRepository<Turma, Long> {
     List<Turma> findByIdProfessor(Long idProfessor);
+    List<Turma> findByIdIn(List<Long> ids);
    
 }
