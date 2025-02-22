@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.ifba.edu.turmas_ms.dtos.DisciplinaDTO;
+import com.ifba.edu.turmas_ms.dtos.TurmaDTO;
 import com.ifba.edu.turmas_ms.models.Disciplina;
+import com.ifba.edu.turmas_ms.models.Turma;
 import com.ifba.edu.turmas_ms.repositories.DisciplinaRepository;
 import com.ifba.edu.turmas_ms.repositories.TurmaRepository;
 
@@ -21,8 +23,9 @@ public class DisciplinaService {
 	
 	// Constructors
 	
-	public DisciplinaService(DisciplinaRepository disciplinaRepository) {
+	public DisciplinaService(DisciplinaRepository disciplinaRepository, TurmaRepository turmaRepository) {
 		this.disciplinaRepository = disciplinaRepository;
+		this.turmaRepository = turmaRepository;
 	}
 	
 	
@@ -72,5 +75,16 @@ public class DisciplinaService {
                 .collect(Collectors.toList());
     }
 	
+		
+		public List<TurmaDTO> getTurmasByDisciplina(Long disciplinaId) {
+
+			Optional<Disciplina> optionalDisciplina = disciplinaRepository.findById(disciplinaId);
+
+			if(optionalDisciplina.isEmpty()){
+				return null;
+			}
+			// Agora buscamos as turmas associadas à disciplina
+			return turmaRepository.findByDisciplinaId(optionalDisciplina.get().getId()).stream().map(TurmaDTO::new).collect(Collectors.toList());
+	}
 	
 }

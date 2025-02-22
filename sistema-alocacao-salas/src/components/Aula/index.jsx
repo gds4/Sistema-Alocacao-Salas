@@ -13,82 +13,54 @@ import {
     CardContent,
     Card
   } from "@mui/material";
-  import { useState } from "react";
-  import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import AulaService from "../../services/aulaService";
+import TurmaService from "../../services/turmaService";
   
    
   function Aula() {
     const navigate = useNavigate();
-    const [aulas, setAulas] = useState([
-      {
-        id: 1,
-        turmaId: 1,
-        salaId: 2,
-        diaSemana: "SEGUNDA",
-        horarioInicio: "17:00:00",
-        duracao: 50,
-        professorId: 1,
-      },
-      {
-        id: 2,
-        turmaId: 2,
-        salaId: 1,
-        diaSemana: "TERCA",
-        horarioInicio: "17:00:00",
-        duracao: 100,
-        professorId: 1,
-      },
-      {
-        id: 3,
-        turmaId: 3,
-        salaId: 3,
-        diaSemana: "QUARTA",
-        horarioInicio: "19:30:00",
-        duracao: 50,
-        professorId: 1,
-      },
-    ]);
-  
-    const turmasMock = [
-      {
-        id: 1,
-        disciplinaDTO: {
-          id: 1,
-          codigo: "INF012",
-          nome: "Matemática",
-        },
-        semestre: "2024.2",
-        idProfessor: 1,
-      },
-      {
-        id: 2,
-        disciplinaDTO: {
-          id: 2,
-          codigo: "INF019",
-          nome: "Programação Orientada a Objetos",
-        },
-        semestre: "2024.2",
-        idProfessor: 1,
-      },
-      {
-        id: 3,
-        disciplinaDTO: {
-          id: 3,
-          codigo: "INF008",
-          nome: "Banco de Dados",
-        },
-        semestre: "2024.2",
-        idProfessor: 1,
-      },
-    ];
+    const [aulas, setAulas] = useState([]);
+    const [turmas, setTurmas] = useState([])
+
+    useEffect(() => {
+      const usuario = JSON.parse(localStorage.getItem('usuario'));
+      if(!usuario || !usuario.id){
+        toast.error('Ocorreu um erro ao buscar dados, Faça login novamente');
+        return;
+      }
+      async function fetchAulasProfessor() {
+        try{
+          const response = await AulaService.listarAulasPorProfessor(usuario.id);
+          setAulas(response)
+        }catch(error){
+          console.error('Ocorreu um erro ao buscar dados', error)
+        }
+        
+      }fetchAulasProfessor();
+    },[])
+
+    useEffect(() => {
+      
+      async function fetchTurmasPorAulas() {
+        try{
+          const turmasIds = aulas.map(aula => aula.turmaId)
+          const response = await TurmaService.buscarTurmasPorIds(turmasIds);
+          setTurmas(response)
+        }catch(error){
+          console.error('Ocorreu um erro ao buscar dados', error)
+        }
+        
+      }fetchTurmasPorAulas();
+    },[aulas])
   
     const diasSemana = ["SEGUNDA", "TERCA", "QUARTA", "QUINTA", "SEXTA"];
     const horarios = ["17:00", "17:50", "18:40", "19:30", "20:20"];
   
     const getDisciplinaByTurmaId = (turmaId) => {
-      const turma = turmasMock.find((t) => t.id === turmaId);
+      const turma = turmas.find((t) => t.id === turmaId);
       return turma ? `${turma.disciplinaDTO.codigo} - ${turma.semestre}` : "N/A";
     };
   

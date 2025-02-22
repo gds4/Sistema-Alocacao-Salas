@@ -79,7 +79,7 @@ public class TurmaService {
 								.stream()
 								.map(TurmaDTO::new)
 								.collect(Collectors.toList());
-							}
+		}
 
 
 }
