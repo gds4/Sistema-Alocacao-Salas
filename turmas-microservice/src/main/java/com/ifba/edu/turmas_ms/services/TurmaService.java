@@ -73,5 +73,13 @@ public class TurmaService {
                 .collect(Collectors.toList());
     }
   
+		public List<TurmaDTO> buscarTurmasPorIds(List<Long> ids) {
+
+			return turmaRepository.findByIdIn(ids)
+								.stream()
+								.map(TurmaDTO::new)
+								.collect(Collectors.toList());
+							}
+
 
 }

@@ -10,7 +10,14 @@ import jakarta.persistence.Id;
 
 @Entity(name = "roles")
 public class Role implements GrantedAuthority{
-  
+
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  private String descricao;
+    
   public Role(){
     super();
   }
@@ -24,12 +31,6 @@ public class Role implements GrantedAuthority{
     this.id = roleDTO.id();
     this.descricao = roleDTO.descricao();
   }
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
-  private String descricao;
 
   @Override
   public String getAuthority() {

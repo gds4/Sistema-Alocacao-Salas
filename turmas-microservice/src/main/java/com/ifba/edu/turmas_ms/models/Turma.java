@@ -36,6 +36,10 @@ public class Turma {
 	private Long idProfessor;
 
     // Constructors
+
+	public Turma(){
+		super();
+	}
    
 	public Turma(Long id, Disciplina disciplina, String semestre, Long id_professor) {
 		super();

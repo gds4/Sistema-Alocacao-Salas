@@ -99,4 +99,8 @@ public class TurmaController {
 	 }
     
 
+	 @PostMapping("/buscar-turmas")
+	 public List<TurmaDTO> buscarTurmasPorIds(@RequestBody List<Long> ids) {
+			 return turmaService.buscarTurmasPorIds(ids);
+	 }
 }
