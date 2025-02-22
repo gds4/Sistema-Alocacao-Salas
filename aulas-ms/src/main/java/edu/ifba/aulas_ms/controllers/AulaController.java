@@ -78,4 +78,12 @@ public class AulaController {
     }
     return ResponseEntity.ok().body(aula);
   }
+
+  @GetMapping("/professor/{professorId}")
+  public ResponseEntity<List<AulaResponseDTO>> listarAulasPorProfessor(@PathVariable("professorId") Long professorId){
+
+    List<AulaResponseDTO> aula = this.aulaService.listarAulasPorProfessor(professorId);
+
+    return ResponseEntity.ok().body(aula);
+  }
 }

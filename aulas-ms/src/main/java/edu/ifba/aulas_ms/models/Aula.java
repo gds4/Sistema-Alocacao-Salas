@@ -18,7 +18,7 @@ public class Aula {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long disciplinaId;
+    private Long turmaId;
     private Long salaId;
 
     @Enumerated(EnumType.STRING)
@@ -33,10 +33,10 @@ public class Aula {
     public Aula() {
     }
 
-    public Aula(Long id, Long disciplinaId, Long salaId, DiaSemana diaSemana, LocalTime horarioInicio,
+    public Aula(Long id, Long turmaId, Long salaId, DiaSemana diaSemana, LocalTime horarioInicio,
         Integer duracao, Long professorId) {
       this.id = id;
-      this.disciplinaId = disciplinaId;
+      this.turmaId = turmaId;
       this.salaId = salaId;
       this.diaSemana = diaSemana;
       this.horarioInicio = horarioInicio;
@@ -45,7 +45,7 @@ public class Aula {
     }
 
     public Aula(AulaDTO auladto){
-      this.disciplinaId = auladto.disciplinaId();
+      this.turmaId = auladto.turmaId();
       this.salaId = auladto.salaId();
       this.diaSemana = auladto.diaSemana();
       this.horarioInicio = auladto.horarioInicio();
@@ -62,12 +62,12 @@ public class Aula {
       this.id = id;
     }
 
-    public Long getDisciplinaId() {
-      return disciplinaId;
+    public Long getTurmaId() {
+      return turmaId;
     }
 
-    public void setDisciplinaId(Long disciplinaId) {
-      this.disciplinaId = disciplinaId;
+    public void setTurmaId(Long turmaId) {
+      this.turmaId = turmaId;
     }
 
     public Long getSalaId() {

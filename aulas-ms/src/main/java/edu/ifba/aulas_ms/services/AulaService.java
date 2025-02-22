@@ -53,7 +53,7 @@ public class AulaService {
 
     Aula aula = aulaOptional.get();
 
-    aula.setDisciplinaId(id);
+    aula.setTurmaId(id);
     aula.setDiaSemana(aulaDTO.diaSemana());
     aula.setDuracao(aulaDTO.duracao());
     aula.setSalaId(aulaDTO.salaId());

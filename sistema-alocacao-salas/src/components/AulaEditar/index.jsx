@@ -15,14 +15,20 @@ const AulaEditar = () => {
   useEffect(() => {
     AulaService.obterAula(id)
       .then((data) => {
-        setDadosIniciais(data);
+        // Ajustar o formato do horário
+        const adjustedData = {
+          ...data,
+          horarioInicio: data.horarioInicio.slice(0, 5) // Remove os segundos
+        };
+        setDadosIniciais(adjustedData);
+        console.log(adjustedData);
       })
       .catch(() => {
         toast.error('Aula não encontrada');
         navigate(-1);
       });
   }, [id, navigate]);
-
+  
   const handleSubmit = async (data) => {
     try {
       await AulaService.editarAula(id, data);

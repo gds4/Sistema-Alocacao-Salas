@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 
 const defaultFormData = {
   diaSemana: "",
-  horario: "",
-  disciplina: "",
-  sala: "",
-  duracao: "",
+  horarioInicio: "",
+  turmaId: "",
+  salaId: "",
+  duracao: 50,
 };
 
 const AulaForm = ({ initialData = defaultFormData, onSubmit }) => {
@@ -66,8 +66,8 @@ const AulaForm = ({ initialData = defaultFormData, onSubmit }) => {
           <FormControl fullWidth margin="normal">
             <InputLabel shrink>Horário de Início</InputLabel>
             <Select
-              name="horario"
-              value={formData.horario}
+              name="horarioInicio"
+              value={formData.horarioInicio}
               onChange={handleChange}
               required
             >
@@ -82,14 +82,14 @@ const AulaForm = ({ initialData = defaultFormData, onSubmit }) => {
           <FormControl fullWidth margin="normal">
             <InputLabel shrink>Disciplinas</InputLabel>
             <Select
-              name="disciplina"
-              value={formData.disciplina}
+              name="turmaId"
+              value={formData.turmaId}
               onChange={handleChange}
               required
             >
-              {disciplinas.map((disc, index) => (
-                <MenuItem key={index} value={disc.disciplina}>
-                  {disc.disciplina}
+              {disciplinas.map((disc) => (
+                <MenuItem key={disc.turmaId} value={disc.turmaId}>
+                  {disc.disciplina} ({disc.semestre})
                 </MenuItem>
               ))}
             </Select>
@@ -98,13 +98,13 @@ const AulaForm = ({ initialData = defaultFormData, onSubmit }) => {
           <FormControl fullWidth margin="normal">
             <InputLabel shrink>Salas</InputLabel>
             <Select
-              name="sala"
-              value={formData.sala}
+              name="salaId"
+              value={formData.salaId}
               onChange={handleChange}
               required
             >
-              {salas.map((sala, index) => (
-                <MenuItem key={index} value={sala.id}>
+              {salas.map((sala) => (
+                <MenuItem key={sala.id} value={sala.id}>
                   {sala.descricao}
                 </MenuItem>
               ))}
@@ -112,17 +112,17 @@ const AulaForm = ({ initialData = defaultFormData, onSubmit }) => {
           </FormControl>
 
           <FormControl fullWidth margin="normal">
-            <InputLabel shrink>Duração</InputLabel>
+            <InputLabel shrink>Duração (minutos)</InputLabel>
             <Select
               name="duracao"
               value={formData.duracao}
               onChange={handleChange}
               required
             >
-              <MenuItem value="50">50 min</MenuItem>
-              <MenuItem value="100">100 min</MenuItem>
-              <MenuItem value="150">150 min</MenuItem>
-              <MenuItem value="200">200 min</MenuItem>
+              <MenuItem value={50}>50 min</MenuItem>
+              <MenuItem value={100}>100 min</MenuItem>
+              <MenuItem value={150}>150 min</MenuItem>
+              <MenuItem value={200}>200 min</MenuItem>
             </Select>
           </FormControl>
 
@@ -138,10 +138,10 @@ const AulaForm = ({ initialData = defaultFormData, onSubmit }) => {
 AulaForm.propTypes = {
   initialData: PropTypes.shape({
     diaSemana: PropTypes.string,
-    horario: PropTypes.string,
-    disciplina: PropTypes.string,
-    sala: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    duracao: PropTypes.string,
+    horarioInicio: PropTypes.string,
+    turmaId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    salaId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    duracao: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }),
   onSubmit: PropTypes.func.isRequired,
 };

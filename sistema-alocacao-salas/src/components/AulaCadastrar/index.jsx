@@ -9,12 +9,25 @@ const AulaCadastrar = () => {
 
   const handleSubmit = async (data) => {
     try {
-      await AulaService.agendarAula(data);
+
+      const usuario = JSON.parse(localStorage.getItem('usuario'));
+      if (!usuario || !usuario.id) {
+        toast.error('Usuário não autenticado!');
+        return;
+      }
+
+      const payload = {
+        ...data,
+        duracao: data.duracao,
+        professorId: usuario.id
+      };
+      console.log(payload)
+
+      await AulaService.agendarAula(payload);
       toast.success('Aula cadastrada com sucesso!');
       navigate("/aulas");
-    // eslint-disable-next-line no-unused-vars
     } catch (error) {
-      toast.error("Erro ao cadastrar a aula:");
+      toast.error(error.response?.data?.message || "Erro ao cadastrar a aula");
     }
   };
 
