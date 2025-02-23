@@ -46,6 +46,9 @@ public class TurmaService {
 	    Optional<Turma> findTurma = this.turmaRepository.findById(id);
 	    if (findTurma.isEmpty())
 	        return null;
+	    if (turmaDTO.idProfessor() != findTurma.get().getIdProfessor()) {
+	      return null;
+	    }
 	    Turma turma = findTurma.get();
 	    turma.setDisciplina(new Disciplina(turmaDTO.disciplinaDTO())); 
 	    turma.setSemestre(turmaDTO.semestre());

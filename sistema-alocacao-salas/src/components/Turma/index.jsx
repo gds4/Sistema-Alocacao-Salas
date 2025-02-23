@@ -37,6 +37,14 @@ function Turmas() {
     };
 
     const handleDelete = async (id) => {
+        // Verifica se o usuário está logado
+        const usuario = JSON.parse(localStorage.getItem("usuario"));
+        if (!usuario) {
+            toast.error("Você precisa estar logado para excluir uma turma!");
+            navigate("/login"); // Redireciona para a tela de login
+            return;
+        }
+
         try {
             await TurmaService.excluirTurma(id);
             setTurmas((prev) => prev.filter((turma) => turma.id !== id));
@@ -55,10 +63,19 @@ function Turmas() {
                         <Button
                             variant="contained"
                             color="primary"
-                            onClick={() => navigate("/turmas/cadastrar")}
+                            onClick={() => {
+                                // Verifica se o usuário está logado antes de redirecionar para a tela de cadastro
+                                const usuario = JSON.parse(localStorage.getItem("usuario"));
+                                if (!usuario) {
+                                    toast.error("Você precisa estar logado para cadastrar uma turma!");
+                                    navigate("/login");
+                                } else {
+                                    navigate("/turmas/cadastrar");
+                                }
+                            }}
                         >
                             Cadastrar Turma
-                        </Button> 
+                        </Button>
                     </Box>
                 </CardContent>
             </Card>
@@ -85,7 +102,16 @@ function Turmas() {
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => navigate(`/turmas/editar/${turma.id}`, { state: { turma } })}
+                                        onClick={() => {
+                                            // Verifica se o usuário está logado antes de redirecionar para a tela de edição
+                                            const usuario = JSON.parse(localStorage.getItem("usuario"));
+                                            if (!usuario) {
+                                                toast.error("Você precisa estar logado para editar uma turma!");
+                                                navigate("/login");
+                                            } else {
+                                                navigate(`/turmas/editar/${turma.id}`, { state: { turma } });
+                                            }
+                                        }}
                                         sx={{ marginRight: 1 }}
                                     >
                                         Editar

@@ -13,24 +13,34 @@ import DisciplinaService from "../../services/disciplinaService"; // Serviço pa
 
 function CriarTurma() {
     const [semestre, setSemestre] = useState("");
-    const [idProfessor, setIdProfessor] = useState("");
-    const [disciplinaDTO, setDisciplinaDTO] = useState(null); // Armazena a disciplina selecionada
+    const [idProfessor, setIdProfessor] = useState(""); // ID do professor logado
+    const [disciplinaDTO, setDisciplinaDTO] = useState(null); // Disciplina selecionada
     const [disciplinas, setDisciplinas] = useState([]); // Lista de disciplinas disponíveis
     const navigate = useNavigate();
 
-    // Carrega a lista de disciplinas ao iniciar a tela
+    // Carrega o ID do professor logado e a lista de disciplinas ao iniciar a tela
     useEffect(() => {
-        const carregarDisciplinas = async () => {
+        const carregarDadosIniciais = async () => {
             try {
+                // Obtém o usuário logado do localStorage
+                const usuario = JSON.parse(localStorage.getItem("usuario"));
+                if (usuario && usuario.id) {
+                    setIdProfessor(usuario.id); // Define o ID do professor logado
+                } else {
+                    toast.error("Usuário não está logado ou dados inválidos!");
+                    navigate("/login"); // Redireciona para a tela de login se não houver usuário logado
+                }
+
+                // Carrega a lista de disciplinas
                 const response = await DisciplinaService.listarDisciplinas();
                 setDisciplinas(response);
             } catch (error) {
                 console.error(error);
-                toast.error("Erro ao carregar disciplinas!");
+                toast.error("Erro ao carregar dados iniciais!");
             }
         };
-        carregarDisciplinas();
-    }, []);
+        carregarDadosIniciais();
+    }, [navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -64,17 +74,6 @@ function CriarTurma() {
                     onChange={(e) => setSemestre(e.target.value)}
                     margin="normal"
                     placeholder="Ex: 2024.2"
-                    required
-                />
-
-                {/* Campo para o ID do professor */}
-                <TextField
-                    fullWidth
-                    label="ID do Professor"
-                    value={idProfessor}
-                    onChange={(e) => setIdProfessor(e.target.value)}
-                    margin="normal"
-                    type="number"
                     required
                 />
 
