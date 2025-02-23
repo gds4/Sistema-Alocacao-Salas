@@ -18,6 +18,7 @@ import EditarDisciplina from './components/DisciplinaEditar'
 import Turmas from './components/Turma'
 import CriarTurma from './components/TurmaCriar'
 import EditarTurma from './components/TurmaEditar'
+import CadastrarUsuario from './components/UsuarioCadastro'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -39,6 +40,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/turmas" element={<Turmas/>} />
           <Route path="/turmas/cadastrar" element={<CriarTurma/>} />
           <Route path="/turmas/editar/:id" element={<EditarTurma/>} />
+          <Route path="/usuario/cadastrar/" element={<CadastrarUsuario/>} />
         </Routes>
       </Box>
     </BrowserRouter>

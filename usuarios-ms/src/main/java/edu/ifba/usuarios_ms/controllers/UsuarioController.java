@@ -18,7 +18,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import edu.ifba.usuarios_ms.dtos.UsuarioDTO;
 import edu.ifba.usuarios_ms.dtos.UsuarioResponseDTO;
-import edu.ifba.usuarios_ms.models.Usuario;
 import edu.ifba.usuarios_ms.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
