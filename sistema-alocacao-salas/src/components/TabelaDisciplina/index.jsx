@@ -41,14 +41,14 @@ function TabelaDisciplina({ agendamentos, turmas }) {
               {daysOfWeek.map(day => {
                 const aula = getAula(day, time);
                 return (
-                  <TableCell key={day}>
+                  <TableCell key={day}  sx={{ textAlign: 'center' }}>
                     {aula ? (
                       <div>
                         <Typography variant="body2" fontWeight="bold">
-                          {turmas.find(t => t.id === aula.turmaId)?.disciplinaDTO.codigo || 'Código não encontrado'}
+                          {turmas.find(t => t.id === aula.turmaId)?.disciplinaDTO.codigo || '-'}
                         </Typography>
-                        <Typography variant="caption">
-                          Professor: {aula.professorId}
+                        <Typography variant="caption" >
+                          {'T' + turmas.find(t => t.id === aula.turmaId)?.id || '-'}
                         </Typography>
                       </div>
                     ) : '-'}

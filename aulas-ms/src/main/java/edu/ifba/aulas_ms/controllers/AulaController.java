@@ -3,6 +3,7 @@ package edu.ifba.aulas_ms.controllers;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,14 +28,15 @@ public class AulaController {
     this.aulaService = aulaService;
   }
 
+  @PreAuthorize("hasRole('ROLE_PROFESSOR')")
   @PostMapping
   public ResponseEntity<AulaResponseDTO> agendarAula(@RequestBody AulaDTO novaAula){
     AulaResponseDTO aulaAgendada = this.aulaService.agendarAula(novaAula);
 
     return ResponseEntity.created(null).body(aulaAgendada);
   }
-  
 
+  @PreAuthorize("hasRole('ROLE_PROFESSOR')")
   @PutMapping("/{id}")
   public ResponseEntity<AulaResponseDTO> editarAula(@PathVariable("id") Long id, @RequestBody AulaDTO novaAula){
     AulaResponseDTO aulaEditada = this.aulaService.editarAula(id, novaAula);
@@ -45,6 +47,7 @@ public class AulaController {
     return ResponseEntity.created(null).body(aulaEditada);
   }
 
+  @PreAuthorize("hasRole('ROLE_PROFESSOR')")
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deletarAula(@PathVariable("id") Long id) {
     try {

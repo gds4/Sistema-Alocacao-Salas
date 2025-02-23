@@ -43,7 +43,7 @@ function Dashboard() {
       try {
         const response = await SalaService.listarSalas();
         setSalas(response);
-        setSalaSelecionada(response[0]?.id || null);
+
       } catch (error) {
         console.error('Erro ao buscar salas:', error);
       }

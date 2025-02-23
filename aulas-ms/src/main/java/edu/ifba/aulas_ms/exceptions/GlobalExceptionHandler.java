@@ -2,11 +2,17 @@ package edu.ifba.aulas_ms.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+      @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException ex) {
+        return new ResponseEntity<>("Você não tem permissão para acessar este recurso", HttpStatus.FORBIDDEN);
+    }
 
   @ExceptionHandler(DuracaoInvalidaException.class)
   public ResponseEntity<String> handleDuracaoInvalida(DuracaoInvalidaException e) {

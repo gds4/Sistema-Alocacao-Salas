@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { TextField, Button, Container, Typography, CircularProgress, Paper } from "@mui/material";
 import AuthService from "../../services/authService";
-import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
-function Login({ onLogin }) {
+function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -16,7 +17,7 @@ function Login({ onLogin }) {
       const data = await AuthService.login(email, senha);
       localStorage.setItem("token", data.token);
       localStorage.setItem("usuario", JSON.stringify(data.usuario));
-      onLogin();
+      navigate("/dashboard");
     } finally {
       setLoading(false);
     }
@@ -64,9 +65,5 @@ function Login({ onLogin }) {
     </Container>
   );
 }
-
-Login.propTypes = {
-  onLogin: PropTypes.func.isRequired,
-};
 
 export default Login;

@@ -1,20 +1,22 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { TextField, MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
 
 function SeletorProfessor({ professores, professorSelecionado, onSelecionarProfessor }) {
   return (
-    <FormControl fullWidth margin="normal">
-      <InputLabel id="professor-select-label">Selecione o Professor</InputLabel>
-      <Select
-        labelId="professor-select-label"
-        value={professorSelecionado || ''}
-        onChange={(e) => onSelecionarProfessor(Number(e.target.value))}
-      >
-        {professores.map(prof => (
-          <MenuItem key={prof.id} value={prof.id}>{prof.nome}</MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <TextField
+      select
+      label="Selecione o Professor"
+      value={professorSelecionado || ''}
+      onChange={(e) => onSelecionarProfessor(Number(e.target.value))}
+      fullWidth
+      margin="normal"
+    >
+      {professores.map(prof => (
+        <MenuItem key={prof.id} value={prof.id}>
+          {prof.nome}
+        </MenuItem>
+      ))}
+    </TextField>
   );
 }
 

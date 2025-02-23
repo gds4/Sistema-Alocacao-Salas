@@ -43,14 +43,14 @@ function TabelaProfessor({ agendamentos, turmas }) {
               {daysOfWeek.map(day => {
                 const aula = getAula(day, time);
                 return (
-                  <TableCell key={day}>
+                  <TableCell key={day} sx={{textAlign: 'center'}}>
                     {aula ? (
                       <div>
                         <Typography variant="body2" fontWeight="bold">
                           {turmas.find(t => t.id === aula.turmaId)?.disciplinaDTO.codigo || 'Código não encontrado'}
                         </Typography>
                         <Typography variant="caption">
-                          Sala: {aula.salaId}
+                          {'T' + turmas.find(t => t.id === aula.turmaId)?.id}
                         </Typography>
                       </div>
                     ) : '-'}
