@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Container, Typography, Table, TableHead, TableBody, TableRow, TableCell, Box, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from '@mui/material'; 
 import { toast } from 'react-toastify'; 
+import { useNavigate } from "react-router-dom";
 import SalaService from '../../services/salaService'; 
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 const SalasListar = () => {
+  const navigate = useNavigate();
   const [salas, setSalas] = useState([]);
   const [openDialogExclusao, setOpenDialogExclusao] = useState(false); 
   const [openDialogEdicao, setOpenDialogEdicao] = useState(false);
@@ -41,7 +43,7 @@ const SalasListar = () => {
   };
 
   const handleConfirmarExclusao = (sala) => {
-    setSalaExclusao(sala);
+    setSalaExclusao(sala); 
     setOpenDialogExclusao(true); 
    
   };
@@ -49,18 +51,19 @@ const SalasListar = () => {
   const handleEdit = (sala) => {
     setSalaAtual(sala);
     setNomeSala(sala.nome); 
+    setNomeSala(sala.nome); 
     setOpenDialogEdicao(true);
   };
 
   const handleSave = async () => {
     try {
-     
+   
       await SalaService.atualizarSala(salaAtual.id, { nome: nomeSala });
       toast.success("Sala atualizada com sucesso!");
       setOpenDialogEdicao(false);
       setSalaAtual(null);
       setNomeSala(""); 
-     
+      
       const response = await SalaService.listarSalas();
       setSalas(response || []);
     } catch (error) {
@@ -71,9 +74,14 @@ const SalasListar = () => {
   const handleFecharDialogExclusao = () => {
     setOpenDialogExclusao(false); 
     setSalaExclusao(null); 
+    setOpenDialogExclusao(false); 
+    setSalaExclusao(null); 
   };
 
   const handleFecharDialogEdicao = () => {
+    setOpenDialogEdicao(false); 
+    setSalaAtual(null); 
+    setNomeSala(""); 
     setOpenDialogEdicao(false); 
     setSalaAtual(null); 
     setNomeSala(""); 
@@ -85,6 +93,14 @@ const SalasListar = () => {
       <Typography variant="h5" gutterBottom align="center">
         Listar Salas
       </Typography>
+      <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate('/sala/cadastrar')} 
+          style={{ marginBottom: '20px' }}
+        >
+          Cadastrar Sala
+        </Button>
       {salas.length > 0 ? (
         <Table sx={{ marginTop: 2 }}>
           <TableHead>
@@ -123,7 +139,7 @@ const SalasListar = () => {
       )}
     </Box>
 
-     
+    
      <Dialog open={openDialogExclusao} onClose={handleFecharDialogExclusao}>
         <DialogTitle>Confirmar Exclusão</DialogTitle>
         <DialogContent>

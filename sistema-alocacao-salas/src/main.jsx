@@ -12,7 +12,9 @@ import { Box } from '@mui/material'
 import SalaCadastrar from './components/SalaCadastrar'
 import SalaListar from './components/SalaListar'
 import Aula from './components/Aula'
-
+import Disciplinas from './components/Disciplina'
+import CriarDisciplina from './components/DisciplinaCriar'
+import EditarDisciplina from './components/DisciplinaEditar'
 
 //<Route exact path="/filme/:id" element={<Filme/>}/>
 
@@ -30,6 +32,9 @@ createRoot(document.getElementById('root')).render(
           <Route path="/sala/cadastrar" element={<SalaCadastrar/>} />
           <Route path="/sala/listar" element={<SalaListar/>}/>
           <Route path="/login" element={<Login/>} />
+          <Route path="/disciplinas" element={<Disciplinas/>} />
+          <Route path="/disciplinas/cadastrar" element={<CriarDisciplina/>} />
+          <Route path="/disciplinas/editar/:id" element={<EditarDisciplina/>} />
         </Routes>
       </Box>
     </BrowserRouter>
