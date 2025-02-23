@@ -15,12 +15,13 @@ import Aula from './components/Aula'
 import Disciplinas from './components/Disciplina'
 import CriarDisciplina from './components/DisciplinaCriar'
 import EditarDisciplina from './components/DisciplinaEditar'
-
-//<Route exact path="/filme/:id" element={<Filme/>}/>
+import Turmas from './components/Turma'
+import CriarTurma from './components/TurmaCriar'
+import EditarTurma from './components/TurmaEditar'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter> 
       <Box sx={{ display: "flex" }}>
         <Sidebar />
         <Routes>
@@ -35,6 +36,9 @@ createRoot(document.getElementById('root')).render(
           <Route path="/disciplinas" element={<Disciplinas/>} />
           <Route path="/disciplinas/cadastrar" element={<CriarDisciplina/>} />
           <Route path="/disciplinas/editar/:id" element={<EditarDisciplina/>} />
+          <Route path="/turmas" element={<Turmas/>} />
+          <Route path="/turmas/cadastrar" element={<CriarTurma/>} />
+          <Route path="/turmas/editar/:id" element={<EditarTurma/>} />
         </Routes>
       </Box>
     </BrowserRouter>
