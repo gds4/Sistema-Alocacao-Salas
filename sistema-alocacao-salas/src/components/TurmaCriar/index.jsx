@@ -9,29 +9,28 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import TurmaService from "../../services/turmaService";
-import DisciplinaService from "../../services/disciplinaService"; // Serviço para buscar disciplinas
+import DisciplinaService from "../../services/disciplinaService"; 
 
 function CriarTurma() {
     const [semestre, setSemestre] = useState("");
-    const [idProfessor, setIdProfessor] = useState(""); // ID do professor logado
-    const [disciplinaDTO, setDisciplinaDTO] = useState(null); // Disciplina selecionada
-    const [disciplinas, setDisciplinas] = useState([]); // Lista de disciplinas disponíveis
+    const [idProfessor, setIdProfessor] = useState(""); 
+    const [disciplinaDTO, setDisciplinaDTO] = useState(null); 
+    const [disciplinas, setDisciplinas] = useState([]); 
     const navigate = useNavigate();
 
-    // Carrega o ID do professor logado e a lista de disciplinas ao iniciar a tela
     useEffect(() => {
         const carregarDadosIniciais = async () => {
             try {
-                // Obtém o usuário logado do localStorage
+
                 const usuario = JSON.parse(localStorage.getItem("usuario"));
                 if (usuario && usuario.id) {
-                    setIdProfessor(usuario.id); // Define o ID do professor logado
+                    setIdProfessor(usuario.id); 
                 } else {
                     toast.error("Usuário não está logado ou dados inválidos!");
-                    navigate("/login"); // Redireciona para a tela de login se não houver usuário logado
+                    navigate("/login"); 
                 }
 
-                // Carrega a lista de disciplinas
+            
                 const response = await DisciplinaService.listarDisciplinas();
                 setDisciplinas(response);
             } catch (error) {
@@ -66,7 +65,7 @@ function CriarTurma() {
         <Container>
             <Typography variant="h4">Criar Turma</Typography>
             <form onSubmit={handleSubmit}>
-                {/* Campo para o semestre */}
+    
                 <TextField
                     fullWidth
                     label="Semestre"
@@ -77,12 +76,12 @@ function CriarTurma() {
                     required
                 />
 
-                {/* Campo para selecionar a disciplina */}
+               
                 <Autocomplete
                     options={disciplinas}
-                    getOptionLabel={(option) => `${option.nome} (ID: ${option.id})`} // Exibe o nome e o ID da disciplina
+                    getOptionLabel={(option) => `${option.nome} (ID: ${option.id})`} 
                     value={disciplinaDTO}
-                    onChange={(_, newValue) => setDisciplinaDTO(newValue)} // Atualiza a disciplina selecionada
+                    onChange={(_, newValue) => setDisciplinaDTO(newValue)} 
                     renderInput={(params) => (
                         <TextField
                             {...params}
@@ -94,7 +93,6 @@ function CriarTurma() {
                     )}
                 />
 
-                {/* Botões de ação */}
                 <div style={{ marginTop: '16px' }}>
                     <Button type="submit" variant="contained" color="primary" style={{ marginRight: '8px' }}>Salvar</Button>
                     <Button variant="contained" color="secondary" onClick={handleVoltar}>Voltar</Button>

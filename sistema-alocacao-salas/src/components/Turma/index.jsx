@@ -28,7 +28,17 @@ function Turmas() {
 
     const carregarTurmas = async () => {
         try {
-            const response = await TurmaService.listarTurmas();
+            // Obtém o usuário logado do localStorage
+            const usuario = JSON.parse(localStorage.getItem("usuario"));
+            if (!usuario) {
+                toast.error("Você precisa estar logado para visualizar as turmas!");
+                navigate("/login"); // Redireciona para a tela de login
+                return;
+            }
+
+
+            // Busca as turmas do professor logado
+            const response = await TurmaService.listarTurmasPorProfessor(usuario.id);
             setTurmas(response);
         } catch (error) {
             console.error(error);
@@ -59,7 +69,7 @@ function Turmas() {
             <Card sx={{ marginBottom: 3, padding: 2 }}>
                 <CardContent>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Typography variant="h4">Turmas</Typography>
+                        <Typography variant="h4">Minhas Turmas</Typography>
                         <Button
                             variant="contained"
                             color="primary"

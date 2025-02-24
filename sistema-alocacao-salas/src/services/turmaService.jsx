@@ -14,6 +14,12 @@ const TurmaService = {
     return response.data;
   },
 
+    listarTurmas: async () => {
+    const response = await axios.get(API_URL);
+    return response.data;
+  },
+
+
   editarTurma: async (id, turmaDTO) => {
     const response = await axios.put(`${API_URL}/${id}`, turmaDTO);
     return response.data;
