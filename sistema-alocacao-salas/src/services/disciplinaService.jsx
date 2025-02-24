@@ -1,37 +1,69 @@
-import axios from 'axios';
+import api from "../APIS/axiosApi/api";
 
-const API_URL = 'http://localhost:8082/turmas-ms/disciplinas';
+const DISCIPLINA_ENDPOINT = '/turmas-ms/disciplinas';
 
 const DisciplinaService = {
 
   cadastrarDisciplina: async (novaDisciplina) => {
-    const response = await axios.post(API_URL, novaDisciplina);
-    return response.data;
+    try {
+      const response = await api.post(DISCIPLINA_ENDPOINT, novaDisciplina);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+    }
   },
 
   listarDisciplinas: async () => {
-    const response = await axios.get(API_URL);
-    return response.data;
+    try {
+      const response = await api.get(DISCIPLINA_ENDPOINT);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+    }
   },
 
   editarDisciplina: async (id, disciplinaAtualizada) => {
-    const response = await axios.put(`${API_URL}/${id}`, disciplinaAtualizada);
-    return response.data;
+    try {
+      const response = await api.put(`${DISCIPLINA_ENDPOINT}/${id}`, disciplinaAtualizada);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+    }
   },
 
   excluirDisciplina: async (id) => {
-    const response = await axios.delete(`${API_URL}/${id}`);
-    return response.data;
+    try {
+      const response = await api.delete(`${DISCIPLINA_ENDPOINT}/${id}`);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+    }
   },
 
   listarDisciplinasPorProfessor: async (idProfessor) => {
-    const response = await axios.get(`${API_URL}/professor/${idProfessor}`);
-    return response.data;
+    try {
+      const response = await api.get(`${DISCIPLINA_ENDPOINT}/professor/${idProfessor}`);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+    }
   },
 
   listarTurmasPorDisciplina: async (idDisciplina) => {
-    const response = await axios.get(`${API_URL}/${idDisciplina}/turmas`);
-    return response.data;
+    try {
+      const response = await api.get(`${DISCIPLINA_ENDPOINT}/${idDisciplina}/turmas`);
+      return response.data;
+    } catch (error) {
+      this.handleError(error);
+    }
+  },
+
+  handleError: (error) => {
+    const errorMessage = error.response?.data?.message || 
+                        error.message || 
+                        'Erro na comunicação com o servidor';
+    console.error('Erro na requisição:', errorMessage);
+    throw new Error(errorMessage);
   }
 };
 

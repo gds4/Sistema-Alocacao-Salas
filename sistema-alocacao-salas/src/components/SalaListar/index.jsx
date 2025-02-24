@@ -3,8 +3,6 @@ import { Button, Container, Typography, Table, TableHead, TableBody, TableRow, T
 import { toast } from 'react-toastify'; 
 import { useNavigate } from "react-router-dom";
 import SalaService from '../../services/salaService'; 
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 
 const SalasListar = () => {
   const navigate = useNavigate();
@@ -118,18 +116,18 @@ const SalasListar = () => {
                 <TableCell>{sala.id}</TableCell>
                 <TableCell>{sala.nome}</TableCell>
                 <TableCell>
-                  <Button variant="outlined" color="primary"  onClick={() => handleEdit(sala)}>
+                  <Button variant="contained" color="primary"  onClick={() => handleEdit(sala)}>
                     Editar
-                    <EditIcon/>
+                    
                   </Button>
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     color="secondary"
                     onClick={() => handleConfirmarExclusao(sala)}
                     style={{ marginLeft: '10px' }}
                   >
                     Excluir
-                    <DeleteIcon/>
+                   
                   </Button>
                 </TableCell>
               </TableRow>

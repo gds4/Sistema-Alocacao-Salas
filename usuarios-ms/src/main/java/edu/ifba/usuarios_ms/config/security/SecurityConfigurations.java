@@ -33,11 +33,7 @@ public class SecurityConfigurations {
           .cors(cors -> cors.disable()) // Desabilita CORS no microsserviço
           .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
           .authorizeHttpRequests(req -> req
-              .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
               .requestMatchers(HttpMethod.POST, "/login").permitAll()
-              .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
-              .requestMatchers(HttpMethod.GET, "/usuarios/professores").permitAll()
-              .requestMatchers(HttpMethod.POST, "/usuarios/notificar/sala").permitAll()
               .requestMatchers("/api-docs/**", "/swagger-ui/**").permitAll()
               .anyRequest().authenticated()
           )

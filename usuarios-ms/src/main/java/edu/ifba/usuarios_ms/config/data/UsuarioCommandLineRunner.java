@@ -19,13 +19,10 @@ public class UsuarioCommandLineRunner {
     public CommandLineRunner loadData(UsuarioRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             if (roleRepository.count() == 0) {
-                Role professorRole = new Role();
-                professorRole.setDescricao("ROLE_PROFESSOR");
-                Role adminRole = new Role();
-                adminRole.setDescricao("ROLE_ADMIN");
-                Role userRole = new Role();
-                userRole.setDescricao("ROLE_USUARIO");
-                roleRepository.saveAll(List.of(professorRole, adminRole, userRole));
+                Role professorRole = new Role(1L, "ROLE_PROFESSOR");
+                Role alunoRole = new Role(2L, "ROLE_ALUNO");
+                Role adminRole = new Role(3L, "ROLE_ADMIN");
+                roleRepository.saveAll(List.of(professorRole, alunoRole , adminRole));
             }
 
             if (userRepository.buscarUsuarioPorEmail("projetopweb091@gmail.com").isEmpty()) {

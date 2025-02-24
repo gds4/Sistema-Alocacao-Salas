@@ -140,11 +140,4 @@ public class AulaController {
     return ResponseEntity.ok().body(aulas);
   }
 
-  @DeleteMapping("/notificar/sala")
-  public ResponseEntity<Void> notificarRemocaoSala(@RequestBody SalaDTO sala) {
-
-    aulaService.processarRemocaoSala(sala);
-      return ResponseEntity.ok().build();
-  }
-
 }

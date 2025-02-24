@@ -29,9 +29,10 @@ function EditarDisciplina() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await DisciplinaService.atualizarDisciplina(disciplina.id, { codigo, nome });
+            await DisciplinaService.editarDisciplina(disciplina.id, { codigo, nome });
             toast.success("Disciplina atualizada com sucesso!");
             navigate("/disciplinas");
+        // eslint-disable-next-line no-unused-vars
         } catch (error) {
             toast.error("Erro ao atualizar disciplina!");
         }

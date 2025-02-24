@@ -8,9 +8,6 @@ const AuthService = {
     return response.data;
   },
 
-  getCurrentUser: () => {
-    return localStorage.getItem('token'); 
-  }
 };
 
 export default AuthService;
