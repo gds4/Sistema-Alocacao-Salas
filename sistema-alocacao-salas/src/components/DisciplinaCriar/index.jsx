@@ -20,7 +20,10 @@ function CriarDisciplina() {
             toast.error("Erro ao criar disciplina!");
         }
     };
-    
+
+    const handleVoltar = () => {
+        navigate("/disciplinas");
+    };
 
     return (
         <Container>
@@ -28,7 +31,10 @@ function CriarDisciplina() {
             <form onSubmit={handleSubmit}>
                 <TextField fullWidth label="Código" value={codigo} onChange={(e) => setCodigo(e.target.value)} margin="normal" />
                 <TextField fullWidth label="Nome" value={nome} onChange={(e) => setNome(e.target.value)} margin="normal" />
-                <Button type="submit" variant="contained" color="primary">Salvar</Button>
+                <div style={{ marginTop: '16px' }}>
+                    <Button type="submit" variant="contained" color="primary" style={{ marginRight: '8px' }}>Salvar</Button>
+                    <Button variant="contained" color="secondary" onClick={handleVoltar}>Voltar</Button>
+                </div>
             </form>
         </Container>
     );

@@ -19,6 +19,11 @@ import edu.ifba.aulas_ms.dtos.AulaDTO;
 import edu.ifba.aulas_ms.dtos.AulaResponseDTO;
 import edu.ifba.aulas_ms.dtos.SalaDTO;
 import edu.ifba.aulas_ms.services.AulaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/aulas")
@@ -32,6 +37,9 @@ public class AulaController {
     this.rabbitTemplate = rabbitTemplate;
   }
 
+
+  @Operation(summary = "Agendar aula", description = "Agenda uma aula nova no sistema")
+  @ApiResponse(responseCode = "201", description = "Aula agendada com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDTO.class)))
   @PreAuthorize("hasRole('ROLE_PROFESSOR')")
   @PostMapping
   public ResponseEntity<AulaResponseDTO> agendarAula(@RequestBody AulaDTO novaAula){
@@ -40,6 +48,12 @@ public class AulaController {
     return ResponseEntity.created(null).body(aulaAgendada);
   }
 
+
+   @Operation(summary = "Editar Aula", description = "Edita uma aula do sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Aula editada com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Aula não encontrada")
+    })
   @PreAuthorize("hasRole('ROLE_PROFESSOR')")
   @PutMapping("/{id}")
   public ResponseEntity<AulaResponseDTO> editarAula(@PathVariable("id") Long id, @RequestBody AulaDTO novaAula){
@@ -51,6 +65,13 @@ public class AulaController {
     return ResponseEntity.created(null).body(aulaEditada);
   }
 
+
+
+  @Operation(summary = "Remover Aula", description = "Remove uma aula do sistema")
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "204", description = "Aula removida com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDTO.class))),
+          @ApiResponse(responseCode = "404", description = "Aula não encontrada")
+  })
   @PreAuthorize("hasRole('ROLE_PROFESSOR')")
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deletarAula(@PathVariable("id") Long id) {
@@ -62,6 +83,10 @@ public class AulaController {
     }
   }
 
+
+
+  @Operation(summary = "Listar Aulas", description = "Lista as aulas do sistema")
+	@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDTO.class)))
   @GetMapping
   public ResponseEntity<List<AulaResponseDTO>> listarTodasAulas() {
     List<AulaResponseDTO> aulas = this.aulaService.listarTodasAulas();
@@ -69,12 +94,21 @@ public class AulaController {
   }
 
 
+  @Operation(summary = "Listar Aulas por Sala", description = "Lista as aulas para uma sala")
+	@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDTO.class)))
   @GetMapping("/sala/{salaId}")
   public ResponseEntity<List<AulaResponseDTO>> listarAulasPorSala(@PathVariable("salaId") Long salaId) {
     List<AulaResponseDTO> aulas = this.aulaService.listarAulasPorSala(salaId);
     return ResponseEntity.ok(aulas);
   }
 
+
+
+  @Operation(summary = "Obter Aula", description = "Busca uma aula no sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Aula não encontrada")
+    })
   @GetMapping("/{id}")
   public ResponseEntity<AulaResponseDTO> obterAula(@PathVariable("id") Long id){
 
@@ -86,6 +120,9 @@ public class AulaController {
     return ResponseEntity.ok().body(aula);
   }
 
+
+  @Operation(summary = "Listar Aula por Professor", description = "Lista as aulas para um professor")
+  @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDTO.class)))       
   @GetMapping("/professor/{professorId}")
   public ResponseEntity<List<AulaResponseDTO>> listarAulasPorProfessor(@PathVariable("professorId") Long professorId){
 
@@ -94,6 +131,9 @@ public class AulaController {
     return ResponseEntity.ok().body(aula);
   }
 
+
+  @Operation(summary = "Listar Aulas por Turmas", description = "Lista as aulas para uma turma")
+	@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDTO.class)))
   @PostMapping("/turmas")
   public ResponseEntity<List<AulaResponseDTO>> listarAulasPorTurmas(@RequestBody List<Long> ids){
     List<AulaResponseDTO> aulas = aulaService.listarAulasPorTurmas(ids);

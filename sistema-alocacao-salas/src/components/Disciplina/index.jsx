@@ -83,7 +83,7 @@ function Disciplinas() {
                                     <Button 
                                         variant="contained" 
                                         color="primary" 
-                                        onClick={() => navigate(`/disciplinas/editar/${disciplina.id}`)}
+                                        onClick={() => navigate(`/disciplinas/editar/${disciplina.id}`, { state: { disciplina } })}
                                         sx={{ marginRight: 1 }}
                                     >
                                         Editar
