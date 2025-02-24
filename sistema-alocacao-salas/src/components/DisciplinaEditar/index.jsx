@@ -34,6 +34,7 @@ function EditarDisciplina() {
             navigate("/disciplinas");
         // eslint-disable-next-line no-unused-vars
         } catch (error) {
+            console.log(error)
             toast.error("Erro ao atualizar disciplina!");
         }
     };
