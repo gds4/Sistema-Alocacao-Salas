@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-
+import edu.ifba.aulas_ms.enums.DiaSemana;
 import edu.ifba.aulas_ms.models.Aula;
 
 public interface AulaRepository extends JpaRepository<Aula, Long> {
@@ -27,8 +27,7 @@ public interface AulaRepository extends JpaRepository<Aula, Long> {
     List<Aula> findBySalaId(Long salaId);
     List<Aula> findByTurmaId(Long salaId);
     List<Aula> findByProfessorId(Long professorId);
-
-
     List<Aula> findByTurmaIdIn(List<Long> ids);
+    List<Aula> findByProfessorIdAndDiaSemana(Long professorId, DiaSemana diaSemana);
 
 }

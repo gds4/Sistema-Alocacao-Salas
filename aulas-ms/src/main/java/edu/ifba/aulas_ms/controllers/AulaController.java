@@ -1,9 +1,7 @@
 package edu.ifba.aulas_ms.controllers;
 
 import java.util.List;
-import java.util.Set;
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.ifba.aulas_ms.dtos.AulaDTO;
 import edu.ifba.aulas_ms.dtos.AulaResponseDTO;
-import edu.ifba.aulas_ms.dtos.SalaDTO;
 import edu.ifba.aulas_ms.services.AulaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,18 +26,18 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RequestMapping("/aulas")
 public class AulaController {
   
-  private RabbitTemplate rabbitTemplate;
+
   private AulaService aulaService;
 
-  public AulaController(AulaService aulaService, RabbitTemplate rabbitTemplate) {
+  public AulaController(AulaService aulaService) {
     this.aulaService = aulaService;
-    this.rabbitTemplate = rabbitTemplate;
+
   }
 
 
   @Operation(summary = "Agendar aula", description = "Agenda uma aula nova no sistema")
   @ApiResponse(responseCode = "201", description = "Aula agendada com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDTO.class)))
-  @PreAuthorize("hasRole('ROLE_PROFESSOR')")
+  @PreAuthorize("hasAuthority('ROLE_PROFESSOR')")
   @PostMapping
   public ResponseEntity<AulaResponseDTO> agendarAula(@RequestBody AulaDTO novaAula){
     AulaResponseDTO aulaAgendada = this.aulaService.agendarAula(novaAula);
@@ -54,7 +51,7 @@ public class AulaController {
             @ApiResponse(responseCode = "201", description = "Aula editada com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDTO.class))),
             @ApiResponse(responseCode = "404", description = "Aula não encontrada")
     })
-  @PreAuthorize("hasRole('ROLE_PROFESSOR')")
+    @PreAuthorize("hasAuthority('ROLE_PROFESSOR')")
   @PutMapping("/{id}")
   public ResponseEntity<AulaResponseDTO> editarAula(@PathVariable("id") Long id, @RequestBody AulaDTO novaAula){
     AulaResponseDTO aulaEditada = this.aulaService.editarAula(id, novaAula);
@@ -72,7 +69,7 @@ public class AulaController {
           @ApiResponse(responseCode = "204", description = "Aula removida com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDTO.class))),
           @ApiResponse(responseCode = "404", description = "Aula não encontrada")
   })
-  @PreAuthorize("hasRole('ROLE_PROFESSOR')")
+  @PreAuthorize("hasAuthority('ROLE_PROFESSOR')")
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deletarAula(@PathVariable("id") Long id) {
     try {

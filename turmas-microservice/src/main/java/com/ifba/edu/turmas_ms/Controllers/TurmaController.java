@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,7 @@ public class TurmaController {
 	
 	@Operation(summary = "Cadastrar Turma", description = "Cadastra uma Turma no sistema")
 	@ApiResponse(responseCode = "201", description = "Turma cadastrada com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TurmaDTO.class)))
+	@PreAuthorize("hasAuthority('ROLE_PROFESSOR')")
 	@PostMapping
 	public ResponseEntity<TurmaDTO> cadastrarTurma(@RequestBody TurmaDTO turmaDTO, UriComponentsBuilder uriBuilder){
 		TurmaDTO turma= this.turmaService.cadastrarTurma(turmaDTO);
@@ -65,6 +67,7 @@ public class TurmaController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Turma atualizada com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TurmaDTO.class))),
             @ApiResponse(responseCode = "404", description = "Turma não encontrada")})
+	@PreAuthorize("hasAuthority('ROLE_PROFESSOR')")
 	@PutMapping("/{id}")
 	public ResponseEntity<TurmaDTO> editarTurma(@PathVariable("id") Long id, @RequestBody TurmaDTO turmaDTO){
 		TurmaDTO turma = this.turmaService.editarTurma(id, turmaDTO);
@@ -79,6 +82,7 @@ public class TurmaController {
             @ApiResponse(responseCode = "200", description = "Turma removida com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TurmaDTO.class))),
             @ApiResponse(responseCode = "404", description = "Turma não encontrada")
     })
+	@PreAuthorize("hasAuthority('ROLE_PROFESSOR')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<TurmaDTO> excluirTurma(@PathVariable("id") Long turmaID){
 		TurmaDTO turma = this.turmaService.excluirTurma(turmaID);

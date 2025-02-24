@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 function TabelaDisciplina({ agendamentos, turmas }) {
   const daysOfWeek = ['SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA'];
-  const timeSlots = ['17:00', '17:50', '18:40', '19:30', '20:20'];
+  const timeSlots = ['17:00', '17:50', '18:40', '19:30', '20:20', '21:10'];
 
   const parseTime = (time) => {
     const [hours, minutes] = time.split(":");

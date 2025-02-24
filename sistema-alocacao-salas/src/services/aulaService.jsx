@@ -12,11 +12,12 @@ const AulaService = {
   },
 
   editarAula: async (id, aulaAtualizada) => {
+    // eslint-disable-next-line no-useless-catch
     try {
       const response = await api.put(`${AULA_ENDPOINT}/${id}`, aulaAtualizada);
       return response.data;
     } catch (error) {
-      this.handleError(error);
+      throw error
     }
   },
 

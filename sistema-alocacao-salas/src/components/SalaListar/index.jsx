@@ -96,7 +96,7 @@ const SalasListar = () => {
       <Button
           variant="contained"
           color="primary"
-          onClick={() => navigate('/sala/cadastrar')} 
+          onClick={() => navigate('/salas/cadastrar')} 
           style={{ marginBottom: '20px' }}
         >
           Cadastrar Sala

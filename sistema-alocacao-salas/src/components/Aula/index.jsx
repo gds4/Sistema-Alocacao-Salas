@@ -57,11 +57,11 @@ import TurmaService from "../../services/turmaService";
     },[aulas])
   
     const diasSemana = ["SEGUNDA", "TERCA", "QUARTA", "QUINTA", "SEXTA"];
-    const horarios = ["17:00", "17:50", "18:40", "19:30", "20:20"];
+    const horarios = ["17:00", "17:50", "18:40", "19:30", "20:20", "21:10"];
   
     const getDisciplinaByTurmaId = (turmaId) => {
       const turma = turmas.find((t) => t.id === turmaId);
-      return turma ? `${turma.disciplinaDTO.codigo} - ${turma.semestre}` : "N/A";
+      return turma ? `${turma.disciplinaDTO.codigo}` : "N/A";
     };
   
     const parseTime = (time) => {
@@ -144,7 +144,7 @@ import TurmaService from "../../services/turmaService";
           </Table>
         </TableContainer>
   
-        <TableContainer component={Paper} sx={{ marginTop: 4 }}>
+        { aulas.length !== 0 && <TableContainer component={Paper} sx={{ marginTop: 4 }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -181,7 +181,7 @@ import TurmaService from "../../services/turmaService";
               ))}
             </TableBody>
           </Table>
-        </TableContainer>
+        </TableContainer>}
       </Container>
     );
   }

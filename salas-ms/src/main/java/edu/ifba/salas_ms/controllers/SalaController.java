@@ -38,6 +38,7 @@ public class SalaController {
 	
 	@Operation(summary = "Cadastrar Sala", description = "Cadastra uma sala no sistema")
 	@ApiResponse(responseCode = "201", description = "Sala cadastrada com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SalaDTO.class)))
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<SalaDTO> cadastrar(@RequestBody SalaDTO salaDTO, UriComponentsBuilder uriBuilder){
 		
@@ -61,7 +62,7 @@ public class SalaController {
             @ApiResponse(responseCode = "200", description = "Sala atualizada com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SalaDTO.class))),
             @ApiResponse(responseCode = "404", description = "Sala não encontrada")
     })
-	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<SalaDTO> editar(@PathVariable("id") Long salaId, @RequestBody SalaDTO salaDTO){
 		
@@ -81,6 +82,7 @@ public class SalaController {
             @ApiResponse(responseCode = "200", description = "Sala removida com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SalaDTO.class))),
             @ApiResponse(responseCode = "404", description = "Sala não encontrada")
     })
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<SalaDTO> excluir(@PathVariable("id") Long salaId){
 		

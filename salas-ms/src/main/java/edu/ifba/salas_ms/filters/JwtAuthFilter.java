@@ -1,4 +1,5 @@
 package edu.ifba.salas_ms.filters;
+
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
@@ -43,6 +44,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       if (jwtUtil.validateToken(token)) {
           List<String> roles = jwtUtil.extractRoles(token);
           
+          // Mapeia as roles diretamente para as SimpleGrantedAuthority
           Collection<SimpleGrantedAuthority> authorities = roles.stream()
               .map(SimpleGrantedAuthority::new)
               .collect(Collectors.toList());

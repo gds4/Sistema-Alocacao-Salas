@@ -31,8 +31,8 @@ createRoot(document.getElementById('root')).render(
           <Route exact path="/aulas" element={<Aula/>}/>
           <Route exact path="/aulas/cadastrar" element={<AulaCadastrar/>}/>
           <Route exact path="/aulas/editar/:id" element={<AulaEditar/>}/>
-          <Route path="/sala/cadastrar" element={<SalaCadastrar/>} />
-          <Route path="/sala/listar" element={<SalaListar/>}/>
+          <Route path="/salas/cadastrar" element={<SalaCadastrar/>} />
+          <Route path="/salas" element={<SalaListar/>}/>
           <Route path="/login" element={<Login/>} />
           <Route path="/disciplinas" element={<Disciplinas/>} />
           <Route path="/disciplinas/cadastrar" element={<CriarDisciplina/>} />

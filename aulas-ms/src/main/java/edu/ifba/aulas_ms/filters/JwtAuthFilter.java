@@ -19,6 +19,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
@@ -44,6 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
       if (jwtUtil.validateToken(token)) {
           List<String> roles = jwtUtil.extractRoles(token);
           
+          // Mapeia as roles diretamente para as SimpleGrantedAuthority
           Collection<SimpleGrantedAuthority> authorities = roles.stream()
               .map(SimpleGrantedAuthority::new)
               .collect(Collectors.toList());

@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,7 @@ public class DisciplinaController {
 	
 	@Operation(summary = "Cadastrar Dsiciplina", description = "Cadastra uma disciplina no sistema")
 	@ApiResponse(responseCode = "201", description = "Disciplinia cadastrada com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = DisciplinaDTO.class)))
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<DisciplinaDTO> cadastrarDisciplina(@RequestBody DisciplinaDTO disciplinaDTO, UriComponentsBuilder uriBuilder){
 		DisciplinaDTO disciplina = this.disciplinaService.cadasdrarDisciplina(disciplinaDTO);
@@ -67,6 +69,7 @@ public class DisciplinaController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Disciplina atualizada com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = DisciplinaDTO.class))),
             @ApiResponse(responseCode = "404", description = "Disciplina não encontrada")})
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<DisciplinaDTO> editarDisciplina(@PathVariable("id") Long id, @RequestBody DisciplinaDTO disciplinaDTO){
 		DisciplinaDTO disciplina = this.disciplinaService.editarDisciplina(id, disciplinaDTO);
@@ -81,6 +84,7 @@ public class DisciplinaController {
             @ApiResponse(responseCode = "200", description = "Disciplina removida com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = DisciplinaDTO.class))),
             @ApiResponse(responseCode = "404", description = "Disciplina não encontrada")
     })
+	@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<DisciplinaDTO> excluirDisciplina(@PathVariable("id") Long salaId){
 		DisciplinaDTO disciplina = this.disciplinaService.excluirDisciplina(salaId);

@@ -20,6 +20,7 @@ const diasSemana = [
 ];
 
 const duracoes = [50, 100, 150, 200];
+const horarios = ["17:00", "17:50", "18:40", "19:30", "20:20", "21:10"];
 
 const AulaForm = ({ initialData = defaultFormData, turmas, salas, onSubmit }) => {
   const [formData, setFormData] = useState(initialData);
@@ -29,14 +30,29 @@ const AulaForm = ({ initialData = defaultFormData, turmas, salas, onSubmit }) =>
     setFormData(initialData);
   }, [initialData]);
 
-  const horarios = ["17:00", "17:50", "18:40", "19:30", "20:20", "21:10"];
-
   const validate = () => {
     const newErrors = {};
+    const inicioEmMinutos = formData.horarioInicio
+      ? parseInt(formData.horarioInicio.split(":")[0]) * 60 + parseInt(formData.horarioInicio.split(":")[1])
+      : null;
+    const fimEmMinutos = inicioEmMinutos + formData.duracao;
+
     if (!formData.diaSemana) newErrors.diaSemana = "Campo obrigatório";
     if (!formData.horarioInicio) newErrors.horarioInicio = "Campo obrigatório";
     if (!formData.turmaId) newErrors.turmaId = "Campo obrigatório";
     if (!formData.salaId) newErrors.salaId = "Campo obrigatório";
+
+    if (formData.duracao % 50 !== 0) {
+      newErrors.duracao = "A duração deve ser múltiplo de 50 minutos";
+    }
+
+    if (inicioEmMinutos < 1020 || inicioEmMinutos > 1270) {
+      newErrors.horarioInicio = "O horário deve estar entre 17:00 e 21:10";
+    }
+
+    if (fimEmMinutos > 1320) {
+      newErrors.horarioInicio = "O horário de término não pode ultrapassar 22:00";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -139,6 +155,8 @@ const AulaForm = ({ initialData = defaultFormData, turmas, salas, onSubmit }) =>
             onChange={handleChange}
             fullWidth
             margin="normal"
+            error={!!errors.duracao}
+            helperText={errors.duracao}
           >
             {duracoes.map((duracao) => (
               <MenuItem key={duracao} value={duracao}>
@@ -155,7 +173,6 @@ const AulaForm = ({ initialData = defaultFormData, turmas, salas, onSubmit }) =>
     </Box>
   );
 };
-
 AulaForm.propTypes = {
   initialData: PropTypes.shape({
     diaSemana: PropTypes.string,

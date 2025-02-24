@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 function TabelaProfessor({ agendamentos, turmas }) {
   const daysOfWeek = ['SEGUNDA', 'TERCA', 'QUARTA', 'QUINTA', 'SEXTA'];
-  const timeSlots = ['17:00', '17:50', '18:40', '19:30', '20:20'];
+  const timeSlots = ['17:00', '17:50', '18:40', '19:30', '20:20', '21:10'];
 
   // Converte string de horário para objeto Date
   const parseTime = (time) => {

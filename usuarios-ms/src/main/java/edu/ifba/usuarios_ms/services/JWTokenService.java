@@ -14,7 +14,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
-import edu.ifba.usuarios_ms.models.Role;
 import edu.ifba.usuarios_ms.models.Usuario;
 
 @Service
@@ -26,8 +25,12 @@ public class JWTokenService {
   public String gerarToken(Usuario usuario) {
     try {
         var algoritmo = Algorithm.HMAC256(secret);
+        // Garante que cada role contenha o prefixo "ROLE_"
         List<String> roles = usuario.getRoles().stream()
-                .map(Role::getDescricao)
+                .map(role -> {
+                    String descricao = role.getDescricao();
+                    return descricao.startsWith("ROLE_") ? descricao : "ROLE_" + descricao;
+                })
                 .collect(Collectors.toList());
         
         return JWT.create()
@@ -37,7 +40,7 @@ public class JWTokenService {
                 .withClaim("roles", roles)
                 .sign(algoritmo);
     } catch (JWTCreationException exception) {
-        throw new RuntimeException("erro ao gerar token jwt", exception);
+        throw new RuntimeException("Erro ao gerar token JWT", exception);
     }
   }
 
@@ -45,7 +48,6 @@ public class JWTokenService {
     try {
       var algoritmo = Algorithm.HMAC256(secret);
       return JWT.require(algoritmo)
-
           .withIssuer("Projeto Final PWEB")
           .build()
           .verify(tokenJWT)
@@ -54,7 +56,6 @@ public class JWTokenService {
       throw new RuntimeException("Token JWT inválido ou expirado!");
     }
   }
-
   
   private Instant dataExpiracao() {
     return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
