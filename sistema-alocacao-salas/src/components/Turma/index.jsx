@@ -23,21 +23,19 @@ function Turmas() {
     const [turmas, setTurmas] = useState([]);
 
     useEffect(() => {
+        const usuario = JSON.parse(localStorage.getItem("usuario"));
+        if (!usuario || usuario.roles.length !== 1 || usuario.roles[0].descricao !== "ROLE_PROFESSOR") {
+            toast.error("Apenas professores podem acessar esta página!");
+            navigate("/");
+            return;
+        }
+
         carregarTurmas();
-    }, []);
+    }, [navigate]);
 
     const carregarTurmas = async () => {
         try {
-            // Obtém o usuário logado do localStorage
             const usuario = JSON.parse(localStorage.getItem("usuario"));
-            if (!usuario) {
-                toast.error("Você precisa estar logado para visualizar as turmas!");
-                navigate("/login"); // Redireciona para a tela de login
-                return;
-            }
-
-
-            // Busca as turmas do professor logado
             const response = await TurmaService.listarTurmasPorProfessor(usuario.id);
             setTurmas(response);
         } catch (error) {
@@ -47,11 +45,10 @@ function Turmas() {
     };
 
     const handleDelete = async (id) => {
-        // Verifica se o usuário está logado
         const usuario = JSON.parse(localStorage.getItem("usuario"));
         if (!usuario) {
             toast.error("Você precisa estar logado para excluir uma turma!");
-            navigate("/login"); // Redireciona para a tela de login
+            navigate("/login");
             return;
         }
 
@@ -74,7 +71,7 @@ function Turmas() {
                             variant="contained"
                             color="primary"
                             onClick={() => {
-                                // Verifica se o usuário está logado antes de redirecionar para a tela de cadastro
+        
                                 const usuario = JSON.parse(localStorage.getItem("usuario"));
                                 if (!usuario) {
                                     toast.error("Você precisa estar logado para cadastrar uma turma!");
@@ -113,7 +110,6 @@ function Turmas() {
                                         variant="contained"
                                         color="primary"
                                         onClick={() => {
-                                            // Verifica se o usuário está logado antes de redirecionar para a tela de edição
                                             const usuario = JSON.parse(localStorage.getItem("usuario"));
                                             if (!usuario) {
                                                 toast.error("Você precisa estar logado para editar uma turma!");
