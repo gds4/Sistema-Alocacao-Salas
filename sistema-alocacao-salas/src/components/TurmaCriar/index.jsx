@@ -9,28 +9,27 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import TurmaService from "../../services/turmaService";
-import DisciplinaService from "../../services/disciplinaService"; 
+import DisciplinaService from "../../services/disciplinaService";
 
 function CriarTurma() {
     const [semestre, setSemestre] = useState("");
-    const [idProfessor, setIdProfessor] = useState(""); 
-    const [disciplinaDTO, setDisciplinaDTO] = useState(null); 
-    const [disciplinas, setDisciplinas] = useState([]); 
+    const [idProfessor, setIdProfessor] = useState("");
+    const [disciplinaDTO, setDisciplinaDTO] = useState(null);
+    const [disciplinas, setDisciplinas] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         const carregarDadosIniciais = async () => {
             try {
-
                 const usuario = JSON.parse(localStorage.getItem("usuario"));
-                if (usuario && usuario.id) {
-                    setIdProfessor(usuario.id); 
-                } else {
-                    toast.error("Usuário não está logado ou dados inválidos!");
-                    navigate("/login"); 
+                if (!usuario || usuario.roles.length !== 1 || usuario.roles[0].descricao !== "ROLE_PROFESSOR") {
+                    toast.error("Apenas professores podem criar turmas!");
+                    navigate("/");
+                    return;
                 }
 
-            
+                setIdProfessor(usuario.id);
+
                 const response = await DisciplinaService.listarDisciplinas();
                 setDisciplinas(response);
             } catch (error) {
@@ -65,7 +64,6 @@ function CriarTurma() {
         <Container>
             <Typography variant="h4">Criar Turma</Typography>
             <form onSubmit={handleSubmit}>
-    
                 <TextField
                     fullWidth
                     label="Semestre"
@@ -76,12 +74,11 @@ function CriarTurma() {
                     required
                 />
 
-               
                 <Autocomplete
                     options={disciplinas}
-                    getOptionLabel={(option) => `${option.nome} (ID: ${option.id})`} 
+                    getOptionLabel={(option) => `${option.nome} (ID: ${option.id})`}
                     value={disciplinaDTO}
-                    onChange={(_, newValue) => setDisciplinaDTO(newValue)} 
+                    onChange={(_, newValue) => setDisciplinaDTO(newValue)}
                     renderInput={(params) => (
                         <TextField
                             {...params}

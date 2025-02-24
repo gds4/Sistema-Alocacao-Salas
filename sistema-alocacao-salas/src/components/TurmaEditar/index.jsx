@@ -14,34 +14,31 @@ import DisciplinaService from "../../services/disciplinaService";
 function EditarTurma() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { turma } = location.state || {}; // Dados da turma passados por estado
+    const { turma } = location.state || {};
 
     const [semestre, setSemestre] = useState(turma?.semestre || "");
-    const [idProfessor, setIdProfessor] = useState(""); // ID do professor logado
-    const [disciplinaDTO, setDisciplinaDTO] = useState(turma?.disciplinaDTO || null); // Disciplina selecionada
-    const [disciplinas, setDisciplinas] = useState([]); // Lista de disciplinas disponíveis
+    const [idProfessor, setIdProfessor] = useState("");
+    const [disciplinaDTO, setDisciplinaDTO] = useState(turma?.disciplinaDTO || null);
+    const [disciplinas, setDisciplinas] = useState([]);
 
-    // Carrega o ID do professor logado e a lista de disciplinas ao iniciar a tela
     useEffect(() => {
         const carregarDadosIniciais = async () => {
             try {
-                // Obtém o usuário logado do localStorage
                 const usuario = JSON.parse(localStorage.getItem("usuario"));
-                if (usuario && usuario.id) {
-                    setIdProfessor(usuario.id); // Define o ID do professor logado
-
-                    // Verifica se o professor logado é o dono da turma
-                    if (turma && turma.idProfessor !== usuario.id) {
-                        toast.error("Você não tem permissão para editar esta turma!");
-                        navigate("/turmas"); // Redireciona para a lista de turmas
-                        return;
-                    }
-                } else {
-                    toast.error("Usuário não está logado ou dados inválidos!");
-                    navigate("/login"); // Redireciona para a tela de login se não houver usuário logado
+                if (!usuario || usuario.roles.length !== 1 || usuario.roles[0].descricao !== "ROLE_PROFESSOR") {
+                    toast.error("Apenas professores podem editar turmas!");
+                    navigate("/");
+                    return;
                 }
 
-                // Carrega a lista de disciplinas
+                if (turma && turma.idProfessor !== usuario.id) {
+                    toast.error("Você não tem permissão para editar esta turma!");
+                    navigate("/turmas");
+                    return;
+                }
+
+                setIdProfessor(usuario.id);
+
                 const response = await DisciplinaService.listarDisciplinas();
                 setDisciplinas(response);
             } catch (error) {
@@ -76,7 +73,6 @@ function EditarTurma() {
         <Container>
             <Typography variant="h4">Editar Turma</Typography>
             <form onSubmit={handleSubmit}>
-                {/* Campo para o semestre */}
                 <TextField
                     fullWidth
                     label="Semestre"
@@ -87,7 +83,6 @@ function EditarTurma() {
                     required
                 />
 
-                {/* Campo para selecionar a disciplina */}
                 <Autocomplete
                     options={disciplinas}
                     getOptionLabel={(option) => `${option.nome} (ID: ${option.id})`}
@@ -104,7 +99,6 @@ function EditarTurma() {
                     )}
                 />
 
-                {/* Botões de ação */}
                 <div style={{ marginTop: '16px' }}>
                     <Button type="submit" variant="contained" color="primary" style={{ marginRight: '8px' }}>Salvar</Button>
                     <Button variant="contained" color="secondary" onClick={handleVoltar}>Voltar</Button>
