@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import edu.ifba.usuarios_ms.dtos.NotificacaoSalaDTO;
 import edu.ifba.usuarios_ms.dtos.UsuarioDTO;
 import edu.ifba.usuarios_ms.dtos.UsuarioResponseDTO;
 import edu.ifba.usuarios_ms.models.Usuario;
@@ -108,4 +109,5 @@ public class UsuarioController {
 
         return usuarioService.listarUsuariosComRoleProfessor();
     }
+
 }

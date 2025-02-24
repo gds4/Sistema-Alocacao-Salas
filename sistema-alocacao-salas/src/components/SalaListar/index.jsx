@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Container, Typography, Table, TableHead, TableBody, TableRow, TableCell, Box, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from '@mui/material'; 
 import { toast } from 'react-toastify'; 
 import { useNavigate } from "react-router-dom";
@@ -43,6 +43,7 @@ const SalasListar = () => {
   };
 
   const handleConfirmarExclusao = (sala) => {
+    console.log(sala)
     setSalaExclusao(sala); 
     setOpenDialogExclusao(true); 
    
@@ -66,6 +67,7 @@ const SalasListar = () => {
       
       const response = await SalaService.listarSalas();
       setSalas(response || []);
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       toast.error("Erro ao atualizar sala.");
     }

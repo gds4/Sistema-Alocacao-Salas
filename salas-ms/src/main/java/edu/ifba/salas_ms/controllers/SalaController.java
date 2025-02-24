@@ -90,7 +90,6 @@ public class SalaController {
 			return ResponseEntity.notFound().build();
 		}
 		
-		
 		return ResponseEntity.ok().body(sala);
 	}
 	

@@ -3,6 +3,7 @@ package edu.ifba.salas_ms.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import edu.ifba.salas_ms.dtos.SalaDTO;
@@ -13,12 +14,13 @@ import edu.ifba.salas_ms.repositories.SalaRepository;
 public class SalaService {
 
 	private SalaRepository salaRepository;
+	private RabbitTemplate rabbitTemplate;
 	
-	public SalaService (SalaRepository salaRepository) {
+	public SalaService (SalaRepository salaRepository, RabbitTemplate rabbitTemplate) {
 		this.salaRepository = salaRepository;
+		this.rabbitTemplate = rabbitTemplate;
+
 	}
-	
-	
 	
 	public SalaDTO cadastrarSala(SalaDTO salaDTO) {
 		
@@ -64,8 +66,9 @@ public class SalaService {
 		
 		Sala salaExcluida = salaOptional.get();
 		salaRepository.deleteById(id);
-		
-		return new SalaDTO(salaExcluida);
+		SalaDTO salaDTO = new SalaDTO(salaExcluida);
+		rabbitTemplate.convertAndSend("salaParaAulaRemocao.notificacao",salaDTO);
+		return salaDTO;
 	}
 	
 	

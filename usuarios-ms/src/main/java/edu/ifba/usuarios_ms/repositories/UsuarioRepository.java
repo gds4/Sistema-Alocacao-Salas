@@ -2,6 +2,7 @@ package edu.ifba.usuarios_ms.repositories;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +20,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long >{
 
     @Query("SELECT u FROM usuarios u JOIN u.roles r WHERE r.descricao = ?1")
     List<Usuario> findByRoleDescricao(String roleDescricao);
+
+    public List<Usuario> findByIdIn(Set<Long> ids);
 
 }

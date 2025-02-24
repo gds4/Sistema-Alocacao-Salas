@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
 import com.ifba.edu.turmas_ms.dtos.TurmaDTO;
@@ -17,11 +18,13 @@ public class TurmaService {
 	// Atributos
 	
 	private TurmaRepository turmaRepository;
+	private RabbitTemplate rabbitTemplate;
 	
 	// Constructors
 	
-	public TurmaService(TurmaRepository turmaRepository) {
+	public TurmaService(TurmaRepository turmaRepository, RabbitTemplate rabbitTemplate) {
 		this.turmaRepository = turmaRepository;
+		this.rabbitTemplate = rabbitTemplate;
 	}
 
 	
@@ -61,7 +64,9 @@ public class TurmaService {
 			return null;
 		Turma turmaParaExcluir = findTurma.get();
 		this.turmaRepository.delete(turmaParaExcluir);
-		return new TurmaDTO(turmaParaExcluir);
+		TurmaDTO turmadto = new TurmaDTO(turmaParaExcluir);
+		rabbitTemplate.convertAndSend("turmaParaAulaRemocao.notificacao", turmadto);
+		return turmadto;
 	
 	}
 	
