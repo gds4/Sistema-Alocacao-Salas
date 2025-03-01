@@ -9,12 +9,13 @@ public record AulaResponseDTO(
   @Schema(name = "id", example = "1")Long id, 
   @Schema(name = "turmaId", example = "2")Long turmaId,
   @Schema(name = "salaId", example = "3")Long salaId, 
-  @Schema(name = "diaSemana", example = "Segunda-feira")String diaSemana,
+  @Schema(name = "diaSemana", example = "SEGUNDA")String diaSemana,
   @Schema(name = "horarioInicio", example = "08:00") LocalTime horarioInicio, 
   @Schema(name = "duracao", example = "50")Integer duracao,
-  @Schema(name = "professorId", example = "4") Long professorId) {
+  @Schema(name = "professorId", example = "4") Long professorId,
+  @Schema(name = "semestre", example = "2025.1") String semestre) {
 
   public AulaResponseDTO(Aula aula){
-    this(aula.getId(), aula.getTurmaId(), aula.getSalaId(), aula.getDiaSemana().toString(), aula.getHorarioInicio(), aula.getDuracao(), aula.getProfessorId());
+    this(aula.getId(), aula.getTurmaId(), aula.getSalaId(), aula.getDiaSemana().toString(), aula.getHorarioInicio(), aula.getDuracao(), aula.getProfessorId(), aula.getSemestre().getDescricao());
   }
 }

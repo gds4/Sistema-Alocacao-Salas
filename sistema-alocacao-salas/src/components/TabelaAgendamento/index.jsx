@@ -51,7 +51,7 @@ function TabelaAgendamento({ agendamentos, turmas }) {
                   {aula ? (
                     <div>
                       <Typography variant="body2" fontWeight="bold">
-                        {turmas.find(t => t.id === aula.turmaId)?.disciplinaDTO.codigo || 'Código não encontrado'}
+                        {turmas.find(t => t.id === aula.turmaId)?.disciplinaDTO.codigo || '-'}
                       </Typography>
                       {/* ... restante do código ... */}
                     </div>

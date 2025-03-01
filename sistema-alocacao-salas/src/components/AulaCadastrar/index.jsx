@@ -6,6 +6,7 @@ import AulaForm from "../AulaForm";
 import { useEffect, useState } from "react";
 import TurmaService from "../../services/turmaService";
 import SalaService from "../../services/salaService";
+import { SemestreService } from "../../services/semestreService";
 
 const AulaCadastrar = () => {
   const navigate = useNavigate();
@@ -60,8 +61,10 @@ const AulaCadastrar = () => {
       const payload = {
         ...data,
         duracao: data.duracao,
-        professorId: usuario.id
+        professorId: usuario.id,
+        semestre: SemestreService.semestreAtual
       };
+      console.log('cadastrando os dados ->')
       console.log(payload)
 
       await AulaService.agendarAula(payload);

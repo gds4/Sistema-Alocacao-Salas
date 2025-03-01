@@ -59,7 +59,7 @@ const AulaService = {
 
   listarAulasPorProfessor: async (professorId) => {
     try {
-      const response = await api.get(`${AULA_ENDPOINT}/professor/${professorId}`);
+      const response = await api.get(`${AULA_ENDPOINT}/professor/${professorId}?semestre=2025.1`);
       return response.data;
     } catch (error) {
       this.handleError(error);

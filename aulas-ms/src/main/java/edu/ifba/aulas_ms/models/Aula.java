@@ -4,6 +4,7 @@ import java.time.LocalTime;
 
 import edu.ifba.aulas_ms.dtos.AulaDTO;
 import edu.ifba.aulas_ms.enums.DiaSemana;
+import edu.ifba.aulas_ms.enums.Semestre;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -30,11 +31,14 @@ public class Aula {
 
     private Long professorId;
 
+    @Enumerated(EnumType.STRING)
+    private Semestre semestre;
+
     public Aula() {
     }
 
     public Aula(Long id, Long turmaId, Long salaId, DiaSemana diaSemana, LocalTime horarioInicio,
-        Integer duracao, Long professorId) {
+        Integer duracao, Long professorId, Semestre semestre ) {
       this.id = id;
       this.turmaId = turmaId;
       this.salaId = salaId;
@@ -42,6 +46,7 @@ public class Aula {
       this.horarioInicio = horarioInicio;
       this.duracao = duracao;
       this.professorId = professorId;
+      this.semestre = semestre;
     }
 
     public Aula(AulaDTO auladto){
@@ -51,8 +56,8 @@ public class Aula {
       this.horarioInicio = auladto.horarioInicio();
       this.duracao = auladto.duracao();
       this.professorId = auladto.professorId();
+      this.semestre = Semestre.fromDescricao(auladto.semestre());
     }
-
 
     public Long getId() {
       return id;
@@ -109,6 +114,15 @@ public class Aula {
     public void setProfessorId(Long professorId){
       this.professorId = professorId;
     }
+
+    public Semestre getSemestre() {
+      return semestre;
+    }
+
+    public void setSemestre(Semestre semestre) {
+      this.semestre = semestre;
+    }
+    
     
    
 }

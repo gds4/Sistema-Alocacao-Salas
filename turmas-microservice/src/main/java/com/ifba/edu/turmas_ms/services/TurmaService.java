@@ -89,5 +89,29 @@ public class TurmaService {
 								.collect(Collectors.toList());
 		}
 
+		public List<TurmaDTO> listarTurmas(String semestre) {
+			if (semestre == null || semestre.isBlank()) {
+					return turmaRepository.findAll().stream().map(TurmaDTO::new).toList();
+			} else {
+					return turmaRepository.findBySemestre(semestre).stream().map(TurmaDTO::new).toList();
+			}
+	}
+
+	public List<TurmaDTO> listarTurmasPorProfessor(Long idProfessor, String semestre) {
+			if (semestre == null || semestre.isBlank()) {
+					return turmaRepository.findByIdProfessor(idProfessor).stream().map(TurmaDTO::new).collect(Collectors.toList());
+			} else {
+					return turmaRepository.findByIdProfessorAndSemestre(idProfessor, semestre).stream().map(TurmaDTO::new).collect(Collectors.toList());
+			}
+	}
+
+	public List<TurmaDTO> buscarTurmasPorIds(List<Long> ids, String semestre) {
+			if (semestre == null || semestre.isBlank()) {
+					return turmaRepository.findByIdIn(ids).stream().map(TurmaDTO::new).collect(Collectors.toList());
+			} else {
+					return turmaRepository.findByIdInAndSemestre(ids, semestre).stream().map(TurmaDTO::new).collect(Collectors.toList());
+			}
+	}
+
 
 }

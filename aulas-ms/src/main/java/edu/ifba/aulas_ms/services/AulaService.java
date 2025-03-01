@@ -16,11 +16,14 @@ import edu.ifba.aulas_ms.dtos.NotificacaoSalaDTO;
 import edu.ifba.aulas_ms.dtos.NotificacaoTurmaDTO;
 import edu.ifba.aulas_ms.dtos.SalaDTO;
 import edu.ifba.aulas_ms.dtos.TurmaDTO;
+import edu.ifba.aulas_ms.enums.Semestre;
 import edu.ifba.aulas_ms.exceptions.ConflitoHorarioException;
 import edu.ifba.aulas_ms.exceptions.DuracaoInvalidaException;
 import edu.ifba.aulas_ms.exceptions.HorarioInvalidoException;
+import edu.ifba.aulas_ms.exceptions.SemestreInvalidoException;
 import edu.ifba.aulas_ms.models.Aula;
 import edu.ifba.aulas_ms.repositories.AulaRepository;
+import edu.ifba.aulas_ms.semestre.SemestreAtual;
 
 @Service
 public class AulaService {
@@ -34,6 +37,12 @@ public class AulaService {
   }
 
   public AulaResponseDTO agendarAula(AulaDTO aulaDTO) {
+
+    Semestre semestre = Semestre.fromDescricao(aulaDTO.semestre());
+
+    if(semestre != SemestreAtual.SEMESTRE_ATUAL){
+      throw new SemestreInvalidoException("O semestre fornecido não deve ser diferente do semestre atual.");
+    }
 
     if (aulaDTO.duracao() % 50 != 0) {
       throw new DuracaoInvalidaException("A duração da aula deve ser múltiplo de 50 minutos.");
@@ -57,14 +66,16 @@ public class AulaService {
         aulaDTO.salaId(),
         aulaDTO.diaSemana().toString(),
         inicio,
-        horarioFim);
+        horarioFim,
+        semestre.name());
     if (!conflitosSala.isEmpty()) {
       throw new ConflitoHorarioException("Conflito de horário: a sala já está alocada para outra aula nesse período.");
     }
 
-    List<Aula> aulasProfessor = aulaRepository.findByProfessorIdAndDiaSemana(
+    List<Aula> aulasProfessor = aulaRepository.findByProfessorIdAndDiaSemanaAndSemestre(
         aulaDTO.professorId(),
-        aulaDTO.diaSemana());
+        aulaDTO.diaSemana(),
+        semestre);
 
     for (Aula aulaProfessor : aulasProfessor) {
       LocalTime professorInicio = aulaProfessor.getHorarioInicio();
@@ -111,7 +122,8 @@ public class AulaService {
         aulaDTO.salaId(),
         aulaDTO.diaSemana().toString(),
         inicio,
-        horarioFim);
+        horarioFim,
+        SemestreAtual.SEMESTRE_ATUAL.name());
 
     conflitosSala = conflitosSala.stream()
         .filter(aula -> !aula.getId().equals(id))
@@ -121,9 +133,10 @@ public class AulaService {
       throw new ConflitoHorarioException("Conflito de horário: a sala já está alocada para outra aula nesse período.");
     }
 
-    List<Aula> aulasProfessor = aulaRepository.findByProfessorIdAndDiaSemana(
+    List<Aula> aulasProfessor = aulaRepository.findByProfessorIdAndDiaSemanaAndSemestre(
         aulaDTO.professorId(),
-        aulaDTO.diaSemana());
+        aulaDTO.diaSemana(),
+        SemestreAtual.SEMESTRE_ATUAL);
         
     aulasProfessor = aulasProfessor.stream()
         .filter(aula -> !aula.getId().equals(id))
@@ -164,16 +177,28 @@ public class AulaService {
         .collect(Collectors.toList());
   }
 
-  public List<AulaResponseDTO> listarAulasPorSala(Long salaId) {
-    return aulaRepository.findBySalaId(salaId).stream()
-        .map(AulaResponseDTO::new)
-        .collect(Collectors.toList());
+  public List<AulaResponseDTO> listarAulasPorSala(Long salaId, String semestre) {
+    List<Aula> aulas = aulaRepository.findBySalaId(salaId);
+    List<AulaResponseDTO> aulasResponse = aulas.stream().map(AulaResponseDTO::new).collect(Collectors.toList());
+
+    if(semestre != null){
+      aulasResponse =  aulasResponse.stream()
+                                    .filter(aula -> aula.semestre().equals(semestre))
+                                    .collect(Collectors.toList());
+    }
+    return aulasResponse;
   }
 
-  public List<AulaResponseDTO> listarAulasPorProfessor(Long idProfessor) {
-    return aulaRepository.findByProfessorId(idProfessor).stream()
-        .map(AulaResponseDTO::new)
-        .collect(Collectors.toList());
+  public List<AulaResponseDTO> listarAulasPorProfessor(Long idProfessor, String semestre) {
+    List<Aula> aulas =  aulaRepository.findByProfessorId(idProfessor);
+
+    List<AulaResponseDTO> aulasResponse = aulas.stream().map(AulaResponseDTO::new).collect(Collectors.toList());
+    if(semestre != null){
+      aulasResponse =  aulasResponse.stream()
+                                    .filter(aula -> aula.semestre().equals(semestre))
+                                    .collect(Collectors.toList());
+    }
+    return aulasResponse;
   }
 
   public AulaResponseDTO obterAula(Long id) {

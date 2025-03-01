@@ -15,7 +15,7 @@ const TurmaService = {
 
   listarTurmas: async () => {
     try {
-      const response = await api.get(TURMA_ENDPOINT);
+      const response = await api.get(`${TURMA_ENDPOINT}?semestre=2025.1`);
       return response.data;
     } catch (error) {
       this.handleError(error);
@@ -42,7 +42,7 @@ const TurmaService = {
 
   listarTurmasPorProfessor: async (idProfessor) => {
     try {
-      const response = await api.get(`${TURMA_ENDPOINT}/professor/${idProfessor}`);
+      const response = await api.get(`${TURMA_ENDPOINT}/professor/${idProfessor}?semestre=2025.1`);
       return response.data;
     } catch (error) {
       this.handleError(error);
@@ -51,7 +51,7 @@ const TurmaService = {
 
   buscarTurmasPorIds: async (ids) => {
     try {
-      const response = await api.post(`${TURMA_ENDPOINT}/buscar-turmas`, ids);
+      const response = await api.post(`${TURMA_ENDPOINT}/buscar-turmas?semestre=2025.1`, ids);
       return response.data;
     } catch (error) {
       this.handleError(error);

@@ -56,6 +56,7 @@ function Turmas() {
             await TurmaService.excluirTurma(id);
             setTurmas((prev) => prev.filter((turma) => turma.id !== id));
             toast.success("Turma removida com sucesso!");
+        // eslint-disable-next-line no-unused-vars
         } catch (error) {
             toast.error("Erro ao excluir turma!");
         }

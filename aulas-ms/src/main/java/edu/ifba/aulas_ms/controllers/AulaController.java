@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ifba.aulas_ms.dtos.AulaDTO;
@@ -94,8 +95,8 @@ public class AulaController {
   @Operation(summary = "Listar Aulas por Sala", description = "Lista as aulas para uma sala")
 	@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDTO.class)))
   @GetMapping("/sala/{salaId}")
-  public ResponseEntity<List<AulaResponseDTO>> listarAulasPorSala(@PathVariable("salaId") Long salaId) {
-    List<AulaResponseDTO> aulas = this.aulaService.listarAulasPorSala(salaId);
+  public ResponseEntity<List<AulaResponseDTO>> listarAulasPorSala(@PathVariable("salaId") Long salaId, @RequestParam(required = false) String semestre) {
+    List<AulaResponseDTO> aulas = this.aulaService.listarAulasPorSala(salaId, semestre);
     return ResponseEntity.ok(aulas);
   }
 
@@ -121,9 +122,9 @@ public class AulaController {
   @Operation(summary = "Listar Aula por Professor", description = "Lista as aulas para um professor")
   @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDTO.class)))       
   @GetMapping("/professor/{professorId}")
-  public ResponseEntity<List<AulaResponseDTO>> listarAulasPorProfessor(@PathVariable("professorId") Long professorId){
+  public ResponseEntity<List<AulaResponseDTO>> listarAulasPorProfessor(@PathVariable("professorId") Long professorId, @RequestParam(required = false) String semestre){
 
-    List<AulaResponseDTO> aula = this.aulaService.listarAulasPorProfessor(professorId);
+    List<AulaResponseDTO> aula = this.aulaService.listarAulasPorProfessor(professorId, semestre);
 
     return ResponseEntity.ok().body(aula);
   }

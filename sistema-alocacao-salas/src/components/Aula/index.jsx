@@ -34,6 +34,8 @@ import TurmaService from "../../services/turmaService";
       async function fetchAulasProfessor() {
         try{
           const response = await AulaService.listarAulasPorProfessor(usuario.id);
+          console.log('aulas do prof ->')
+          console.log(response)
           setAulas(response)
         }catch(error){
           console.error('Ocorreu um erro ao buscar dados', error)

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -58,8 +59,8 @@ public class TurmaController {
 	@Operation(summary = "Listar Turmas", description = "Lista as turmas do sistema")
 	@ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TurmaDTO.class)))	
 	@GetMapping
-	public List<TurmaDTO> listarTurmas(){
-		return this.turmaService.listarTurmas();
+	public List<TurmaDTO> listarTurmas(@RequestParam(required = false) String semestre){
+		return this.turmaService.listarTurmas(semestre);
 	}
 	
 	
@@ -98,13 +99,21 @@ public class TurmaController {
     		@ApiResponse(responseCode = "404", description = "Nenhuma turma encontrada para o professor informado")
     })
     @GetMapping("/professor/{idProfessor}")
-	 public List<TurmaDTO> listarTurmasPorProfessor(@PathVariable Long idProfessor) {
-	     return turmaService.listarTurmasPorProfessor(idProfessor);
-	 }
+    public List<TurmaDTO> listarTurmasPorProfessor(@PathVariable Long idProfessor, @RequestParam(required = false) String semestre) {
+        if (semestre == null || semestre.isBlank()) {
+            return turmaService.listarTurmasPorProfessor(idProfessor);
+        } else {
+            return turmaService.listarTurmasPorProfessor(idProfessor, semestre);
+        }
+    }
     
 
-	 @PostMapping("/buscar-turmas")
-	 public List<TurmaDTO> buscarTurmasPorIds(@RequestBody List<Long> ids) {
-			 return turmaService.buscarTurmasPorIds(ids);
-	 }
+    @PostMapping("/buscar-turmas")
+    public List<TurmaDTO> buscarTurmasPorIds(@RequestBody List<Long> ids, @RequestParam(required = false) String semestre) {
+        if (semestre == null || semestre.isBlank()) {
+            return turmaService.buscarTurmasPorIds(ids);
+        } else {
+            return turmaService.buscarTurmasPorIds(ids, semestre);
+        }
+    } 
 }
