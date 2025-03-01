@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Container, Typography, Table, TableHead, TableBody, TableRow, TableCell, Box, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from '@mui/material'; 
+import { Button, Container, Typography, Table, TableHead, TableBody, TableRow, TableCell, Box, Dialog, DialogActions, DialogContent, DialogTitle, TextField, CardContent, Card} from '@mui/material'; 
 import { toast } from 'react-toastify'; 
 import { useNavigate } from "react-router-dom";
 import SalaService from '../../services/salaService'; 
@@ -88,56 +88,58 @@ const SalasListar = () => {
   };
 
   return (
-    <Container sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-    <Box sx={{ width: '80%', maxWidth: '1000px', boxShadow: 2, borderRadius: 2, padding: 2, backgroundColor: '#fff' }}>
-      <Typography variant="h5" gutterBottom align="center">
-        Listar Salas
-      </Typography>
-      <Button
-          variant="contained"
-          color="primary"
-          onClick={() => navigate('/salas/cadastrar')} 
-          style={{ marginBottom: '20px' }}
-        >
-          Cadastrar Sala
-        </Button>
-      {salas.length > 0 ? (
-        <Table sx={{ marginTop: 2 }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Nome</TableCell>
-              <TableCell>Ações</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {salas.map((sala) => (
-              <TableRow key={sala.id}>
-                <TableCell>{sala.id}</TableCell>
-                <TableCell>{sala.nome}</TableCell>
-                <TableCell>
-                  <Button variant="contained" color="primary"  onClick={() => handleEdit(sala)}>
-                    Editar
-                    
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => handleConfirmarExclusao(sala)}
-                    style={{ marginLeft: '10px' }}
-                  >
-                    Excluir
-                   
-                  </Button>
-                </TableCell>
+    <Container>
+      <Card sx={{ marginBottom: 3, padding: 2 }}>
+        <CardContent>
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Typography variant="h4">Lista de Salas</Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => navigate('/salas/cadastrar')}
+            >
+              Cadastrar Sala
+            </Button>
+          </Box>
+        </CardContent>
+      </Card>
+
+      <Box sx={{ width: '100%', boxShadow: 2, borderRadius: 2, padding: 2, backgroundColor: '#fff' }}>
+        {salas.length > 0 ? (
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Nome</TableCell>
+                <TableCell>Ações</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      ) : (
-        <Typography variant="body1">Nenhuma sala cadastrada.</Typography>
-      )}
-    </Box>
+            </TableHead>
+            <TableBody>
+              {salas.map((sala) => (
+                <TableRow key={sala.id}>
+                  <TableCell>{sala.id}</TableCell>
+                  <TableCell>{sala.nome}</TableCell>
+                  <TableCell>
+                    <Button variant="contained" color="primary" onClick={() => handleEdit(sala)}>
+                      Editar
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => handleConfirmarExclusao(sala)}
+                      style={{ marginLeft: '10px' }}
+                    >
+                      Excluir
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        ) : (
+          <Typography variant="body1" align="center">Nenhuma sala cadastrada.</Typography>
+        )}
+      </Box>
 
     
      <Dialog open={openDialogExclusao} onClose={handleFecharDialogExclusao}>

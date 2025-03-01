@@ -14,7 +14,6 @@ import edu.ifba.usuarios_ms.dtos.NotificacaoTurmaDTO;
 import edu.ifba.usuarios_ms.dtos.NotificacaoTurmaEmailsDTO;
 import edu.ifba.usuarios_ms.dtos.UsuarioDTO;
 import edu.ifba.usuarios_ms.dtos.UsuarioResponseDTO;
-import edu.ifba.usuarios_ms.models.Role;
 import edu.ifba.usuarios_ms.models.Usuario;
 import edu.ifba.usuarios_ms.repositories.UsuarioRepository;
 
@@ -23,13 +22,11 @@ public class UsuarioService {
     
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
-    private JWTokenService tokenService;
     private RabbitTemplate rabbitTemplate;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, JWTokenService tokenService, RabbitTemplate rabbitTemplate) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, RabbitTemplate rabbitTemplate) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
-        this.tokenService = tokenService;
         this.rabbitTemplate = rabbitTemplate;
     }
 

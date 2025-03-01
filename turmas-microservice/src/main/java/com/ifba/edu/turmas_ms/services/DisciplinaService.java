@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.ifba.edu.turmas_ms.dtos.DisciplinaDTO;
 import com.ifba.edu.turmas_ms.dtos.TurmaDTO;
 import com.ifba.edu.turmas_ms.models.Disciplina;
-import com.ifba.edu.turmas_ms.models.Turma;
 import com.ifba.edu.turmas_ms.repositories.DisciplinaRepository;
 import com.ifba.edu.turmas_ms.repositories.TurmaRepository;
 

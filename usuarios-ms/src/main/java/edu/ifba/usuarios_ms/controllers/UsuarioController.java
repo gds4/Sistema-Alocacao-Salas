@@ -3,7 +3,6 @@ package edu.ifba.usuarios_ms.controllers;
 import java.net.URI;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import edu.ifba.usuarios_ms.dtos.NotificacaoSalaDTO;
 import edu.ifba.usuarios_ms.dtos.UsuarioDTO;
 import edu.ifba.usuarios_ms.dtos.UsuarioResponseDTO;
-import edu.ifba.usuarios_ms.models.Usuario;
 import edu.ifba.usuarios_ms.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
