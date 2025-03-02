@@ -104,7 +104,11 @@ public class DisciplinaController {
         return this.disciplinaService.listarDisciplinasPorProfessor(idProfessor);
     }
 
-		
+		@Operation(summary = "Listar Turmas associadas a uma disciplina", description = "Retorna a lista de turmas ue estão associadas à uma disciplina específica, baseado no ID da disciplina.")
+    @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Lista de turmas retornada com sucesso",content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TurmaDTO.class)))),
+    @ApiResponse(responseCode = "404", description = "Id da disciplina não cadastrado no sistema")
+    })
 		@GetMapping("/{disciplinaId}/turmas")
     public ResponseEntity<List<TurmaDTO>> getTurmasByDisciplina(@PathVariable Long disciplinaId) {
 			List<TurmaDTO> turmas = disciplinaService.getTurmasByDisciplina(disciplinaId);

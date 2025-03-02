@@ -5,14 +5,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public record RoleDTO(
     @Schema(name = "id", example = "1") Long id,
-    @Schema(name = "descricao", example = "ROLE_PROFESSOR") String descricao
-) {
-  
+    @Schema(name = "descricao", example = "ROLE_PROFESSOR") String descricao) {
+
   public RoleDTO(Role role) {
     this(
-      role.getId(), 
-      role.getDescricao()
-    );
+        role.getId(),
+        role.getDescricao());
   }
 
 }

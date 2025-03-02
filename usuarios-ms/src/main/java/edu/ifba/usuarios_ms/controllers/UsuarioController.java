@@ -31,7 +31,6 @@ public class UsuarioController {
 
     private UsuarioService usuarioService;
 
-
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
@@ -84,6 +83,11 @@ public class UsuarioController {
         return ResponseEntity.ok().body(usuarioResponse);
     }
 
+    @Operation(summary = "Obter dados do usuário", description = "Retorna as informações do usuário autenticado com base no token JWT.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Dados do usuário retornados com sucesso", content = @Content(schema = @Schema(implementation = UsuarioResponseDTO.class))),
+            @ApiResponse(responseCode = "401", description = "Token inválido ou não autorizado", content = @Content)
+    })
     @GetMapping("/dados-usuario")
     public ResponseEntity<UsuarioResponseDTO> dadosUsuario(@RequestHeader("Authorization") String token) {
         try {
@@ -96,7 +100,11 @@ public class UsuarioController {
         }
     }
 
-     @GetMapping("/professores")
+    @Operation(summary = "Listar professores", description = "Retorna uma lista de usuários que possuem a função de professor.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de professores retornada com sucesso", content = @Content(schema = @Schema(implementation = UsuarioResponseDTO.class)))
+    })
+    @GetMapping("/professores")
     public List<UsuarioResponseDTO> listarUsuariosComRoleProfessor() {
 
         return usuarioService.listarUsuariosComRoleProfessor();
