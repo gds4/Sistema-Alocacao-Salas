@@ -19,18 +19,19 @@ import edu.ifba.usuarios_ms.repositories.UsuarioRepository;
 
 @Service
 public class UsuarioService {
-    
+
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
     private RabbitTemplate rabbitTemplate;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder, RabbitTemplate rabbitTemplate) {
+    public UsuarioService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder,
+            RabbitTemplate rabbitTemplate) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public UsuarioResponseDTO cadastrar(UsuarioDTO usuarioCriacaoDto){
+    public UsuarioResponseDTO cadastrar(UsuarioDTO usuarioCriacaoDto) {
         Usuario novoUsuario = new Usuario(usuarioCriacaoDto);
         novoUsuario.setPassword(passwordEncoder.encode(novoUsuario.getPassword()));
         novoUsuario = this.usuarioRepository.save(novoUsuario);
@@ -38,11 +39,11 @@ public class UsuarioService {
         return new UsuarioResponseDTO(novoUsuario);
     }
 
-    public UsuarioResponseDTO editarUsuario(Long userId, UsuarioDTO usuarioDto){
+    public UsuarioResponseDTO editarUsuario(Long userId, UsuarioDTO usuarioDto) {
 
         Optional<Usuario> usuarioOptional = this.usuarioRepository.findById(userId);
 
-        if(usuarioOptional.isEmpty()){
+        if (usuarioOptional.isEmpty()) {
             return null;
         }
 
@@ -57,38 +58,39 @@ public class UsuarioService {
 
     }
 
-
-    public UsuarioResponseDTO remover(Long id){
+    public UsuarioResponseDTO remover(Long id) {
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
 
-        if(usuarioOptional.isEmpty()){
+        if (usuarioOptional.isEmpty()) {
             return null;
         }
 
         Usuario usuarioRemovido = usuarioOptional.get();
-        
+
         usuarioRepository.deleteById(id);
-        
-        return new UsuarioResponseDTO(usuarioRemovido); 
+
+        return new UsuarioResponseDTO(usuarioRemovido);
     }
 
-    public UsuarioResponseDTO dadosUsuario(String email){
+    public UsuarioResponseDTO dadosUsuario(String email) {
 
         Optional<Usuario> usuarioOptional = usuarioRepository.buscarUsuarioPorEmail(email);
 
-        if(usuarioOptional.isEmpty()){
+        if (usuarioOptional.isEmpty()) {
             return null;
         }
         return new UsuarioResponseDTO(usuarioOptional.get());
-        
+
     }
 
     public List<UsuarioResponseDTO> listarUsuariosComRoleProfessor() {
-        
+
         return usuarioRepository.findByRoleDescricao("ROLE_PROFESSOR")
-                                .stream()
-                                .map(UsuarioResponseDTO::new)
-                                .collect(Collectors.toList());
+                .stream()
+                .filter(usuario -> usuario.getRoles().stream()
+                        .noneMatch(role -> role.getDescricao().equals("ROLE_ADMIN")))
+                .map(UsuarioResponseDTO::new)
+                .collect(Collectors.toList());
     }
 
     public void processarEnvioEmailsSala(NotificacaoSalaDTO dados) {

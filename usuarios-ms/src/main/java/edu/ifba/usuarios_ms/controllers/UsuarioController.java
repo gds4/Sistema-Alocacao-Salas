@@ -37,6 +37,7 @@ public class UsuarioController {
 
     @Operation(summary = "Cadastrar Usuário", description = "Cadastra um novo usuário no sistema")
     @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioResponseDTO.class)))
+    @Secured("ROLE_ADMIN")
     @PostMapping
     public ResponseEntity<UsuarioResponseDTO> cadastrar(@RequestBody UsuarioDTO usuarioCriacaoDto,
             UriComponentsBuilder uriBuilder) {

@@ -34,8 +34,9 @@ public class SecurityConfigurations {
           .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
           .authorizeHttpRequests(req -> req
               .requestMatchers(HttpMethod.POST, "/login").permitAll()
-              .requestMatchers(HttpMethod.POST, "/usuarios").hasRole("ADMIN")
+              .requestMatchers(HttpMethod.GET, "/usuarios/professores").permitAll()
               .requestMatchers("/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+              
               .anyRequest().authenticated()
           )
           .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
