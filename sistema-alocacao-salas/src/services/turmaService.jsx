@@ -1,4 +1,5 @@
 import api from "../APIS/axiosApi/api";
+import { SemestreService } from "./semestreService";
 
 const TURMA_ENDPOINT = '/turmas-ms/turmas';
 
@@ -15,7 +16,7 @@ const TurmaService = {
 
   listarTurmas: async () => {
     try {
-      const response = await api.get(`${TURMA_ENDPOINT}?semestre=2025.1`);
+      const response = await api.get(`${TURMA_ENDPOINT}?semestre=${SemestreService.semestreAtual}`);
       return response.data;
     } catch (error) {
       this.handleError(error);
@@ -42,7 +43,7 @@ const TurmaService = {
 
   listarTurmasPorProfessor: async (idProfessor) => {
     try {
-      const response = await api.get(`${TURMA_ENDPOINT}/professor/${idProfessor}?semestre=2025.1`);
+      const response = await api.get(`${TURMA_ENDPOINT}/professor/${idProfessor}?semestre=${SemestreService.semestreAtual}`);
       return response.data;
     } catch (error) {
       this.handleError(error);

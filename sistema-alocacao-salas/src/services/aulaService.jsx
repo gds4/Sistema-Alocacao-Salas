@@ -1,4 +1,5 @@
 import api from "../APIS/axiosApi/api";
+import { SemestreService } from "./semestreService";
 
 
 const AULA_ENDPOINT = '/aulas-ms/aulas';
@@ -59,7 +60,7 @@ const AulaService = {
 
   listarAulasPorProfessor: async (professorId) => {
     try {
-      const response = await api.get(`${AULA_ENDPOINT}/professor/${professorId}?semestre=2025.1`);
+      const response = await api.get(`${AULA_ENDPOINT}/professor/${professorId}?semestre=${SemestreService.semestreAtual}`);
       return response.data;
     } catch (error) {
       this.handleError(error);

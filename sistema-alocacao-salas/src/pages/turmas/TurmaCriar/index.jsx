@@ -1,18 +1,21 @@
 import { useState, useEffect } from "react";
-import { 
-    Container, 
-    TextField, 
-    Button, 
-    Typography, 
-    Autocomplete 
+import {
+    Container,
+    TextField,
+    Button,
+    Typography,
+    Autocomplete,
+    Card,
+    Box
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import TurmaService from "../../../services/turmaService";
 import DisciplinaService from "../../../services/disciplinaService";
+import { SemestreService } from "../../../services/semestreService";
 
 function CriarTurma() {
-    const [semestre, setSemestre] = useState("");
+    const [semestre] = useState(SemestreService.semestreAtual);
     const [idProfessor, setIdProfessor] = useState("");
     const [disciplinaDTO, setDisciplinaDTO] = useState(null);
     const [disciplinas, setDisciplinas] = useState([]);
@@ -46,7 +49,7 @@ function CriarTurma() {
             await TurmaService.cadastrarTurma(turmaDTO);
             toast.success("Turma criada com sucesso!");
             navigate("/turmas");
-        // eslint-disable-next-line no-unused-vars
+            // eslint-disable-next-line no-unused-vars
         } catch (error) {
             toast.error("Erro ao criar turma!");
         }
@@ -58,39 +61,41 @@ function CriarTurma() {
 
     return (
         <Container>
-            <Typography variant="h4">Criar Turma</Typography>
-            <form onSubmit={handleSubmit}>
-                <TextField
-                    fullWidth
-                    label="Semestre"
-                    value={semestre}
-                    onChange={(e) => setSemestre(e.target.value)}
-                    margin="normal"
-                    placeholder="Ex: 2024.2"
-                    required
-                />
+            <Card sx={{ padding: 2, marginBottom: 2 }}>
+                <Typography variant="h4">Criar Turma</Typography>
+            </Card>
+            <Card sx={{ padding: 2 }}>
+                <form onSubmit={handleSubmit}>
+                    <TextField
+                        fullWidth
+                        label="Semestre"
+                        value={semestre}
+                        margin="normal"
+                        slotProps={{ input: { readOnly: true } }}
+                    />
 
-                <Autocomplete
-                    options={disciplinas}
-                    getOptionLabel={(option) => `${option.nome} (ID: ${option.id})`}
-                    value={disciplinaDTO}
-                    onChange={(_, newValue) => setDisciplinaDTO(newValue)}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Selecione a Disciplina"
-                            margin="normal"
-                            fullWidth
-                            required
-                        />
-                    )}
-                />
+                    <Autocomplete
+                        options={disciplinas}
+                        getOptionLabel={(option) => `${option.nome} (ID: ${option.id})`}
+                        value={disciplinaDTO}
+                        onChange={(_, newValue) => setDisciplinaDTO(newValue)}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Selecione a Disciplina"
+                                margin="normal"
+                                fullWidth
+                                required
+                            />
+                        )}
+                    />
 
-                <div style={{ marginTop: '16px' }}>
-                    <Button type="submit" variant="contained" color="primary" style={{ marginRight: '8px' }}>Salvar</Button>
-                    <Button variant="contained" color="secondary" onClick={handleVoltar}>Voltar</Button>
-                </div>
-            </form>
+                    <Box display="flex" justifyContent="flex-end" marginTop={3}>
+                        <Button type="submit" variant="contained" color="primary" style={{ marginRight: '8px' }}>Salvar</Button>
+                        <Button variant="contained" color="secondary" onClick={handleVoltar}>Voltar</Button>
+                    </Box>
+                </form>
+            </Card>
         </Container>
     );
 }

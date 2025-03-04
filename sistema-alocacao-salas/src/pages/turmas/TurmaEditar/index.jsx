@@ -4,7 +4,9 @@ import {
     TextField, 
     Button, 
     Typography, 
-    Autocomplete 
+    Autocomplete, 
+    Box,
+    Card
 } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -16,7 +18,7 @@ function EditarTurma() {
     const location = useLocation();
     const { turma } = location.state || {};
 
-    const [semestre, setSemestre] = useState(turma?.semestre || "");
+    const [semestre] = useState(turma?.semestre || "");
     const [idProfessor, setIdProfessor] = useState("");
     const [disciplinaDTO, setDisciplinaDTO] = useState(turma?.disciplinaDTO || null);
     const [disciplinas, setDisciplinas] = useState([]);
@@ -25,13 +27,10 @@ function EditarTurma() {
         const carregarDadosIniciais = async () => {
             try {
                 const usuario = JSON.parse(localStorage.getItem("usuario"));
-                if (!usuario || usuario.roles.length !== 1 || usuario.roles[0].descricao !== "ROLE_PROFESSOR") {
-                    toast.error("Apenas professores podem editar turmas!");
-                    navigate("/");
-                    return;
-                }
 
-                if (turma && turma.idProfessor !== usuario.id) {
+                const isAdmin = usuario.roles.find(role => role.descricao === 'ROLE_ADMIN');
+
+                if (turma && turma.idProfessor !== usuario.id && !isAdmin) {
                     toast.error("Você não tem permissão para editar esta turma!");
                     navigate("/turmas");
                     return;
@@ -60,6 +59,7 @@ function EditarTurma() {
             await TurmaService.editarTurma(turma.id, turmaDTO);
             toast.success("Turma atualizada com sucesso!");
             navigate("/turmas");
+        // eslint-disable-next-line no-unused-vars
         } catch (error) {
             toast.error("Erro ao atualizar turma!");
         }
@@ -71,39 +71,41 @@ function EditarTurma() {
 
     return (
         <Container>
-            <Typography variant="h4">Editar Turma</Typography>
-            <form onSubmit={handleSubmit}>
-                <TextField
-                    fullWidth
-                    label="Semestre"
-                    value={semestre}
-                    onChange={(e) => setSemestre(e.target.value)}
-                    margin="normal"
-                    placeholder="Ex: 2024.2"
-                    required
-                />
+            <Card sx={{ padding: 2, marginBottom: 2 }}>
+                <Typography variant="h4">Editar Turma</Typography>
+            </Card>
+            <Card sx={{ padding: 2 }}>
+                <form onSubmit={handleSubmit}>
+                    <TextField
+                        fullWidth
+                        label="Semestre"
+                        value={semestre}
+                        margin="normal"
+                        slotProps={{ input: { readOnly: true } }}
+                    />
 
-                <Autocomplete
-                    options={disciplinas}
-                    getOptionLabel={(option) => `${option.nome} (ID: ${option.id})`}
-                    value={disciplinaDTO}
-                    onChange={(_, newValue) => setDisciplinaDTO(newValue)}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Selecione a Disciplina"
-                            margin="normal"
-                            fullWidth
-                            required
-                        />
-                    )}
-                />
+                    <Autocomplete
+                        options={disciplinas}
+                        getOptionLabel={(option) => `${option.nome} (ID: ${option.id})`}
+                        value={disciplinaDTO}
+                        onChange={(_, newValue) => setDisciplinaDTO(newValue)}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Selecione a Disciplina"
+                                margin="normal"
+                                fullWidth
+                                required
+                            />
+                        )}
+                    />
 
-                <div style={{ marginTop: '16px' }}>
-                    <Button type="submit" variant="contained" color="primary" style={{ marginRight: '8px' }}>Salvar</Button>
-                    <Button variant="contained" color="secondary" onClick={handleVoltar}>Voltar</Button>
-                </div>
-            </form>
+                    <Box display="flex" justifyContent="flex-end" marginTop={3}>
+                        <Button type="submit" variant="contained" color="primary" style={{ marginRight: '8px' }}>Salvar</Button>
+                        <Button variant="contained" color="secondary" onClick={handleVoltar}>Voltar</Button>
+                    </Box>
+                </form>
+            </Card>
         </Container>
     );
 }

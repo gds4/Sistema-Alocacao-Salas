@@ -21,6 +21,7 @@ import TurmaService from "../../../services/turmaService";
 function Turmas() {
     const navigate = useNavigate();
     const [turmas, setTurmas] = useState([]);
+    const [tituloPagina, setTituloPagina] = useState('Minhas Turmas')
 
     useEffect(() => {
 
@@ -30,7 +31,13 @@ function Turmas() {
     const carregarTurmas = async () => {
         try {
             const usuario = JSON.parse(localStorage.getItem("usuario"));
-            const response = await TurmaService.listarTurmasPorProfessor(usuario.id);
+            let response = ''
+            if (usuario.roles.some(role => role.descricao === "ROLE_ADMIN")) {
+                response = await TurmaService.listarTurmas();
+                setTituloPagina('Turmas Cadastradas')
+            } else {
+                response = await TurmaService.listarTurmasPorProfessor(usuario.id);
+            }
             setTurmas(response);
         } catch (error) {
             console.error(error);
@@ -61,7 +68,7 @@ function Turmas() {
             <Card sx={{ marginBottom: 3, padding: 2 }}>
                 <CardContent>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Typography variant="h4">Minhas Turmas</Typography>
+                        <Typography variant="h4">{tituloPagina}</Typography>
                         <Button
                             variant="contained"
                             color="primary"

@@ -90,10 +90,14 @@ function TabelaProfessor({ agendamentos, turmas }) {
                     {aula ? (
                       <div>
                         <Typography variant="body2" fontWeight="bold">
-                          {turmas.find(t => t.id === aula.turmaId)?.disciplinaDTO.codigo || '-'}
+                          {turmas.find(t => t.id === aula.turmaId)?.disciplinaDTO.codigo || 'N/A'}
                         </Typography>
                         <Typography variant="caption">
-                          {'T' + turmas.find(t => t.id === aula.turmaId)?.id || '-'}
+                          {(() => {
+                              const turma = turmas.find(t => t.id === aula.turmaId);
+                              if(turma === undefined) return '';
+                              return turma.id !== undefined ? `T${turma.id}` : '';
+                          })()}
                         </Typography>
                       </div>
                     ) : '-'}
