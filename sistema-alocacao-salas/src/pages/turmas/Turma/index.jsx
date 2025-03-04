@@ -50,7 +50,7 @@ function Turmas() {
             await TurmaService.excluirTurma(id);
             setTurmas((prev) => prev.filter((turma) => turma.id !== id));
             toast.success("Turma removida com sucesso!");
-        // eslint-disable-next-line no-unused-vars
+            // eslint-disable-next-line no-unused-vars
         } catch (error) {
             toast.error("Erro ao excluir turma!");
         }
@@ -66,7 +66,7 @@ function Turmas() {
                             variant="contained"
                             color="primary"
                             onClick={() => {
-        
+
                                 const usuario = JSON.parse(localStorage.getItem("usuario"));
                                 if (!usuario) {
                                     toast.error("Você precisa estar logado para cadastrar uma turma!");
@@ -82,15 +82,15 @@ function Turmas() {
                 </CardContent>
             </Card>
 
-            <TableContainer component={Paper}>
-                <Table>
+            <TableContainer component={Paper} sx={{ marginTop: 4, overflowX: 'auto' }}>
+                <Table sx={{ '& td, & th': { textAlign: 'center' } }}>
                     <TableHead>
                         <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Disciplina</TableCell>
-                            <TableCell>Semestre</TableCell>
-                            <TableCell>ID do Professor</TableCell>
-                            <TableCell>Ações</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>ID</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>Disciplina</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>Semestre</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>ID do Professor</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>Ações</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

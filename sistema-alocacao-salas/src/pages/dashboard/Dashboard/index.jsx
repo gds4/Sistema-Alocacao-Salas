@@ -180,9 +180,9 @@ function Dashboard() {
 
   return (
     <Container sx={{ mt: 4 }}>
-      <Card sx={{ mb: 2, p: 3, boxShadow: 3, borderRadius: 2 }}>
+      <Card sx={{ mb: 2, p: 3, boxShadow: 1, borderRadius: 2 }}>
         <CardContent>
-          <Typography variant="h4" gutterBottom textAlign="center">Dashboard de Aulas</Typography>
+          <Typography variant="h4" gutterBottom>Dashboard de Aulas</Typography>
           
         </CardContent>
       </Card>

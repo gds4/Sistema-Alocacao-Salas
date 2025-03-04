@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { TextField, Button, Container, Typography, CircularProgress, Paper } from "@mui/material";
 import AuthService from "../../services/authService";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -27,6 +28,9 @@ function Login() {
       localStorage.setItem("token", data.token);
       localStorage.setItem("usuario", JSON.stringify(data.usuario));
       navigate("/");
+    // eslint-disable-next-line no-unused-vars
+    }catch(error){
+      toast.error('Login ou senha Inválidos')
     } finally {
       setLoading(false);
     }

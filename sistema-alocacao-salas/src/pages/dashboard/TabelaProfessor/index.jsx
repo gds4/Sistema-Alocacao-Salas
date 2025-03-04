@@ -20,37 +20,80 @@ function TabelaProfessor({ agendamentos, turmas }) {
       const horarioInicio = parseTime(aula.horarioInicio.slice(0, 5));
       const horarioFim = new Date(horarioInicio.getTime() + aula.duracao * 60000);
       return aula.diaSemana === day &&
-             horarioAtual >= horarioInicio &&
-             horarioAtual < horarioFim;
+        horarioAtual >= horarioInicio &&
+        horarioAtual < horarioFim;
     });
   };
 
   return (
-    <TableContainer component={Paper} sx={{ mt: 2 }}>
-      <Table>
+    <TableContainer component={Paper} sx={{ mt: 2, maxWidth: '100%', overflowX: 'auto' }}>
+      <Table sx={{ '& td, & th': { textAlign: 'center', border: '1px solid #ddd' } }}>
         <TableHead>
           <TableRow>
-            <TableCell>Horário</TableCell>
+            <TableCell
+              sx={{
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                maxWidth: '60px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Horário
+            </TableCell>
             {daysOfWeek.map(day => (
-              <TableCell key={day}>{day}</TableCell>
+              <TableCell
+                key={day}
+                sx={{
+                  fontWeight: 'bold',
+                  backgroundColor: '#f5f5f5',
+                  maxWidth: '60px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {day}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
           {timeSlots.map(time => (
             <TableRow key={time}>
-              <TableCell>{time}</TableCell>
+              <TableCell
+                sx={{
+                  minHeight: '60px',
+                  maxWidth: '60px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
+                }}
+              >
+                {time}
+              </TableCell>
               {daysOfWeek.map(day => {
                 const aula = getAula(day, time);
                 return (
-                  <TableCell key={day} sx={{textAlign: 'center'}}>
+                  <TableCell
+                    key={day}
+                    sx={{
+                      minHeight: '60px',
+                      verticalAlign: 'middle',
+                      maxWidth: '60px',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap'
+                    }}
+                  >
                     {aula ? (
                       <div>
                         <Typography variant="body2" fontWeight="bold">
-                          {turmas.find(t => t.id === aula.turmaId)?.disciplinaDTO.codigo || 'Código não encontrado'}
+                          {turmas.find(t => t.id === aula.turmaId)?.disciplinaDTO.codigo || '-'}
                         </Typography>
                         <Typography variant="caption">
-                          {'T' + turmas.find(t => t.id === aula.turmaId)?.id}
+                          {'T' + turmas.find(t => t.id === aula.turmaId)?.id || '-'}
                         </Typography>
                       </div>
                     ) : '-'}

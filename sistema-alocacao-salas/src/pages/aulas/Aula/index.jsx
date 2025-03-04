@@ -90,13 +90,15 @@ function Aula() {
     return date;
   };
 
-  const generateTable = () => {
+  function gerarTabela() {
     return horarios.map((horario) => {
       const horarioAtual = parseTime(horario);
 
       return (
         <TableRow key={horario}>
-          <TableCell>{horario}</TableCell>
+          <TableCell sx={{ minHeight: '60px', maxWidth: '60px', textAlign: 'center' }}>
+            {horario}
+          </TableCell>
           {diasSemana.map((dia) => {
             const aula = aulas.find((a) => {
               const horarioInicio = parseTime(a.horarioInicio.slice(0, 5));
@@ -112,8 +114,8 @@ function Aula() {
             if (aula) {
               const codigoDisciplina = getDisciplinaByTurmaId(aula.turmaId);
               return (
-                <TableCell key={`${dia}-${horario}`}>
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <TableCell key={`${dia}-${horario}`} sx={{ verticalAlign: 'middle', textAlign: 'center', maxWidth: '60px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
                     <span>{codigoDisciplina}</span>
                     <span style={{ fontSize: '0.8em', marginTop: 2 }}>
                       {getSalaByAula(aula.salaId)}
@@ -122,7 +124,11 @@ function Aula() {
                 </TableCell>
               );
             } else {
-              return <TableCell key={`${dia}-${horario}`}></TableCell>;
+              return (
+                <TableCell key={`${dia}-${horario}`} sx={{ verticalAlign: 'middle', textAlign: 'center', maxWidth: '60px' }}>
+                  -
+                </TableCell>
+              );
             }
           })}
         </TableRow>
@@ -158,60 +164,77 @@ function Aula() {
           </Box>
         </CardContent>
       </Card>
-      <TableContainer component={Paper}>
-        <Table>
+
+      {/* Tabela de Horários */}
+      <TableContainer component={Paper} sx={{ mt: 2, maxWidth: '100%', overflowX: 'auto' }}>
+        <Table sx={{ '& td, & th': { textAlign: 'center', border: '1px solid #ddd' } }}>
           <TableHead>
             <TableRow>
-              <TableCell>Horário</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', maxWidth: '60px' }}>Horário</TableCell>
               {diasSemana.map((dia) => (
-                <TableCell key={dia}>{dia}</TableCell>
+                <TableCell
+                  key={dia}
+                  sx={{
+                    fontWeight: 'bold',
+                    backgroundColor: '#f5f5f5',
+                    maxWidth: '60px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {dia}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>{generateTable()}</TableBody>
+          <TableBody>{gerarTabela()}</TableBody>
         </Table>
       </TableContainer>
 
-      {aulas.length !== 0 && <TableContainer component={Paper} sx={{ marginTop: 4 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Disciplina</TableCell>
-              <TableCell>Dia da Semana</TableCell>
-              <TableCell>Horário Início</TableCell>
-              <TableCell>Sala</TableCell>
-              <TableCell>Ações</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {aulas.map((aula) => (
-              <TableRow key={aula.id}>
-                <TableCell>{getDisciplinaByTurmaId(aula.turmaId)}</TableCell>
-                <TableCell>{aula.diaSemana}</TableCell>
-                <TableCell>{aula.horarioInicio.slice(0, 5)}</TableCell>
-                <TableCell>{getSalaByAula(aula.salaId)}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => navigate(`/aulas/editar/${aula.id}`)}
-                    sx={{ marginRight: 1 }}
-                  >
-                    Editar
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => handleDelete(aula.id)}
-                  >
-                    Excluir
-                  </Button>
-                </TableCell>
+      {/* Tabela de Aulas */}
+      {aulas.length !== 0 && (
+        <TableContainer component={Paper} sx={{ marginTop: 4, overflowX: 'auto' }}>
+          <Table sx={{ '& td, & th': { textAlign: 'center',  } }}>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>Disciplina</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>Dia da Semana</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>Horário Início</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>Sala</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>Ações</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>}
+            </TableHead>
+            <TableBody>
+              {aulas.map((aula) => (
+                <TableRow key={aula.id}>
+                  <TableCell>{getDisciplinaByTurmaId(aula.turmaId)}</TableCell>
+                  <TableCell>{aula.diaSemana}</TableCell>
+                  <TableCell>{aula.horarioInicio.slice(0, 5)}</TableCell>
+                  <TableCell>{getSalaByAula(aula.salaId)}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => navigate(`/aulas/editar/${aula.id}`)}
+                      sx={{ marginRight: 1 }}
+                    >
+                      Editar
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => handleDelete(aula.id)}
+                    >
+                      Excluir
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Container>
   );
 }

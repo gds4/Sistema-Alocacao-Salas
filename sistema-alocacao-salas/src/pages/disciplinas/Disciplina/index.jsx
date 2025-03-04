@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { 
-    Container, 
-    Paper, 
-    Table, 
-    TableBody, 
-    TableCell, 
-    TableContainer, 
-    TableHead, 
-    TableRow, 
-    Typography, 
-    Button, 
+import {
+    Container,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+    Button,
     Box,
     CardContent,
     Card
@@ -46,7 +46,7 @@ function Disciplinas() {
             await DisciplinaService.excluirDisciplina(id);
             setDisciplinas((prev) => prev.filter((disciplina) => disciplina.id !== id));
             toast.success("Disciplina removida com sucesso!");
-        // eslint-disable-next-line no-unused-vars
+            // eslint-disable-next-line no-unused-vars
         } catch (error) {
             toast.error("Erro ao excluir disciplina!");
         }
@@ -58,8 +58,8 @@ function Disciplinas() {
                 <CardContent>
                     <Box display="flex" justifyContent="space-between" alignItems="center">
                         <Typography variant="h4">Disciplinas</Typography>
-                        <Button 
-                            variant="contained" 
+                        <Button
+                            variant="contained"
                             color="primary"
                             onClick={() => navigate("/disciplinas/cadastrar")}
                         >
@@ -69,14 +69,14 @@ function Disciplinas() {
                 </CardContent>
             </Card>
 
-            <TableContainer component={Paper}>
-                <Table>
+            <TableContainer component={Paper} sx={{ marginTop: 4, overflowX: 'auto' }}>
+                <Table sx={{ '& td, & th': { textAlign: 'center' } }}>
                     <TableHead>
                         <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Código</TableCell>
-                            <TableCell>Nome</TableCell>
-                            <TableCell>Ações</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>ID</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>Código</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>Nome</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>Ações</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -86,17 +86,17 @@ function Disciplinas() {
                                 <TableCell>{disciplina.codigo}</TableCell>
                                 <TableCell>{disciplina.nome}</TableCell>
                                 <TableCell>
-                                    <Button 
-                                        variant="contained" 
-                                        color="primary" 
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
                                         onClick={() => navigate(`/disciplinas/editar/${disciplina.id}`, { state: { disciplina } })}
                                         sx={{ marginRight: 1 }}
                                     >
                                         Editar
                                     </Button>
-                                    <Button 
-                                        variant="contained" 
-                                        color="secondary" 
+                                    <Button
+                                        variant="contained"
+                                        color="secondary"
                                         onClick={() => handleDelete(disciplina.id)}
                                     >
                                         Excluir

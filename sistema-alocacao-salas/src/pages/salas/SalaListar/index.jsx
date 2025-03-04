@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Button, Container, Typography, Table, TableHead, TableBody, TableRow, TableCell, Box, Dialog, DialogActions, DialogContent, DialogTitle, TextField, CardContent, Card} from '@mui/material'; 
+import { Button, Container, Typography, Table, TableHead, TableBody, TableRow, TableCell, Box, Dialog, DialogActions, DialogContent, DialogTitle, TextField, CardContent, Card, TableContainer, Paper} from '@mui/material'; 
 import { toast } from 'react-toastify'; 
 import { useNavigate } from "react-router-dom";
 import SalaService from '../../../services/salaService'; 
 
-const SalasListar = () => {
+function SalasListar() {
   const navigate = useNavigate();
   const [salas, setSalas] = useState([]);
   const [openDialogExclusao, setOpenDialogExclusao] = useState(false); 
@@ -108,14 +108,15 @@ const SalasListar = () => {
         </CardContent>
       </Card>
 
-      <Box sx={{ width: '100%', boxShadow: 2, borderRadius: 2, padding: 2, backgroundColor: '#fff' }}>
+      <Box sx={{ width: '100%', boxShadow: 2, borderRadius: salas.length > 0 ? 2 : 0 , backgroundColor: '#fff' }}>
         {salas.length > 0 ? (
-          <Table>
+          <TableContainer component={Paper} sx={{ marginTop: 4, overflowX: 'auto' }}>
+          <Table sx={{ '& td, & th': { textAlign: 'center' } }}>
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Nome</TableCell>
-                <TableCell>Ações</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>ID</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>Nome</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', backgroundColor: '#f5f5f5', minWidth: '120px' }}>Ações</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -124,14 +125,19 @@ const SalasListar = () => {
                   <TableCell>{sala.id}</TableCell>
                   <TableCell>{sala.nome}</TableCell>
                   <TableCell>
-                    <Button variant="contained" color="primary" onClick={() => handleEdit(sala)}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleEdit(sala)}
+                      sx={{ marginRight: 1 }}
+                    >
                       Editar
                     </Button>
                     <Button
                       variant="contained"
                       color="secondary"
                       onClick={() => handleConfirmarExclusao(sala)}
-                      style={{ marginLeft: '10px' }}
+                      sx={{ marginLeft: '10px' }}
                     >
                       Excluir
                     </Button>
@@ -140,6 +146,7 @@ const SalasListar = () => {
               ))}
             </TableBody>
           </Table>
+        </TableContainer>
         ) : (
           <Typography variant="body1" align="center">Nenhuma sala cadastrada.</Typography>
         )}

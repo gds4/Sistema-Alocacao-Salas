@@ -30,33 +30,75 @@ function TabelaAgendamento({ agendamentos, turmas }) {
   };
 
   return (
-    <TableContainer component={Paper} sx={{ mt: 2 }}>
-      <Table>
+    <TableContainer component={Paper} sx={{ mt: 2, maxWidth: '100%', overflowX: 'auto' }}>
+      <Table sx={{ '& td, & th': { textAlign: 'center', border: '1px solid #ddd' } }}>
         <TableHead>
           <TableRow>
-            <TableCell>Horário</TableCell>
+            <TableCell
+              sx={{
+                fontWeight: 'bold',
+                backgroundColor: '#f5f5f5',
+                maxWidth: '60px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Horário
+            </TableCell>
             {daysOfWeek.map(day => (
-              <TableCell key={day}>{day}</TableCell>
+              <TableCell
+                key={day}
+                sx={{
+                  fontWeight: 'bold',
+                  backgroundColor: '#f5f5f5',
+                  maxWidth: '60px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {day}
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
           {timeSlots.map(time => (
             <TableRow key={time}>
-              <TableCell>{time}</TableCell>
+              <TableCell
+                sx={{
+                  minHeight: '60px',
+                  maxWidth: '60px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {time}
+              </TableCell>
               {daysOfWeek.map(day => {
                 const aula = getAula(day, time);
                 return (
-                  <TableCell key={day}>
-                  {aula ? (
-                    <div>
-                      <Typography variant="body2" fontWeight="bold">
-                        {turmas.find(t => t.id === aula.turmaId)?.disciplinaDTO.codigo || '-'}
-                      </Typography>
-                      {/* ... restante do código ... */}
-                    </div>
-                  ) : '-'}
-                </TableCell>
+                  <TableCell
+                    key={day}
+                    sx={{
+                      minHeight: '60px',
+                      verticalAlign: 'middle',
+                      maxWidth: '60px',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {aula ? (
+                      <div>
+                        <Typography variant="body2" fontWeight="bold">
+                          {turmas.find(t => t.id === aula.turmaId)?.disciplinaDTO.codigo || '-'}
+                        </Typography>
+                      </div>
+                    ) : '-'}
+                  </TableCell>
                 );
               })}
             </TableRow>

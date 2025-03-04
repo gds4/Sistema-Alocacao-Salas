@@ -18,9 +18,9 @@ function CadastrarUsuario() {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
-    const [role, setRole] = useState("ROLE_PROFESSOR"); 
+    const [role, setRole] = useState("ROLE_PROFESSOR");
 
-   
+
     useEffect(() => {
         const usuario = JSON.parse(localStorage.getItem("usuario"));
         if (!usuario || !usuario.roles.some((r) => r.descricao === "ROLE_ADMIN")) {
@@ -28,7 +28,7 @@ function CadastrarUsuario() {
         }
     }, [navigate]);
 
-    
+
     const rolesMap = {
         ROLE_PROFESSOR: 1,
         ROLE_ALUNO: 2,
@@ -38,17 +38,17 @@ function CadastrarUsuario() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        
+
         if (!nome || !email || !senha || !role) {
             toast.error("Preencha todos os campos!");
             return;
         }
 
-        
+
         const roles = [
             {
-                id: rolesMap[role], 
-                descricao: role, 
+                id: rolesMap[role],
+                descricao: role,
             },
         ];
 
@@ -56,7 +56,7 @@ function CadastrarUsuario() {
             const novoUsuario = { nome, email, senha, roles };
             await UsuarioService.cadastrarUsuario(novoUsuario);
             toast.success("Usuário cadastrado com sucesso!");
-            navigate("/usuarios"); 
+            navigate("/");
         } catch (error) {
             console.error("Erro ao cadastrar usuário:", error);
             toast.error("Erro ao cadastrar usuário!");
@@ -64,7 +64,7 @@ function CadastrarUsuario() {
     };
 
     const handleVoltar = () => {
-        navigate("/usuarios"); 
+        navigate("/");
     };
 
     return (
@@ -84,68 +84,72 @@ function CadastrarUsuario() {
                 </CardContent>
             </Card>
 
-            <form onSubmit={handleSubmit}>
-                <TextField
-                    fullWidth
-                    label="Nome"
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
-                    margin="normal"
-                    required
-                />
+            <Card sx={{ padding: 3 }}>
+                <CardContent>
+                    <form onSubmit={handleSubmit}>
+                        <TextField
+                            fullWidth
+                            label="Nome"
+                            value={nome}
+                            onChange={(e) => setNome(e.target.value)}
+                            margin="normal"
+                            required
+                        />
 
-                <TextField
-                    fullWidth
-                    label="E-mail"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    margin="normal"
-                    required
-                />
+                        <TextField
+                            fullWidth
+                            label="E-mail"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            margin="normal"
+                            required
+                        />
 
-                <TextField
-                    fullWidth
-                    label="Senha"
-                    type="password"
-                    value={senha}
-                    onChange={(e) => setSenha(e.target.value)}
-                    margin="normal"
-                    required
-                />
+                        <TextField
+                            fullWidth
+                            label="Senha"
+                            type="password"
+                            value={senha}
+                            onChange={(e) => setSenha(e.target.value)}
+                            margin="normal"
+                            required
+                        />
 
-                <TextField
-                    fullWidth
-                    select
-                    label="Papel"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    margin="normal"
-                    required
-                >
-                    <MenuItem value="ROLE_PROFESSOR">Professor</MenuItem>
-                    <MenuItem value="ROLE_ALUNO">Aluno</MenuItem>
-                    <MenuItem value="ROLE_ADMIN">Admin</MenuItem>
-                </TextField>
+                        <TextField
+                            fullWidth
+                            select
+                            label="Papel"
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+                            margin="normal"
+                            required
+                        >
+                            <MenuItem value="ROLE_PROFESSOR">Professor</MenuItem>
+                            <MenuItem value="ROLE_ALUNO">Aluno</MenuItem>
+                            <MenuItem value="ROLE_ADMIN">Admin</MenuItem>
+                        </TextField>
 
-                <Box display="flex" justifyContent="flex-end" marginTop={3}>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={handleVoltar}
-                        style={{ marginRight: "8px" }} 
-                    >
-                        Cancelar
-                    </Button>
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                    >
-                        Salvar
-                    </Button>
-                </Box>
-            </form>
+                        <Box display="flex" justifyContent="flex-end" marginTop={3}>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={handleVoltar}
+                                style={{ marginRight: "8px" }}
+                            >
+                                Cancelar
+                            </Button>
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                            >
+                                Salvar
+                            </Button>
+                        </Box>
+                    </form>
+                </CardContent>
+            </Card>
         </Container>
     );
 }
