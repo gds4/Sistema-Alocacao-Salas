@@ -23,16 +23,11 @@ public class UsuarioCommandLineRunner {
                 Role professorRole = new Role();
                 professorRole.setDescricao("ROLE_PROFESSOR");
 
-
-                Role alunoRole = new Role();
-                alunoRole.setDescricao("ROLE_ALUNO");
-
-
                 Role adminRole = new Role();
                 adminRole.setDescricao("ROLE_ADMIN");
 
 
-                roleRepository.saveAll(List.of(professorRole, alunoRole, adminRole));
+                roleRepository.saveAll(List.of(professorRole, adminRole));
             }
 
 

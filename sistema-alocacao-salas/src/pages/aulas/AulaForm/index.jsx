@@ -16,7 +16,6 @@ const diasSemana = [
   { key: "QUARTA", label: "Quarta-feira" },
   { key: "QUINTA", label: "Quinta-feira" },
   { key: "SEXTA", label: "Sexta-feira" },
-  { key: "SABADO", label: "Sábado" },
 ];
 
 const duracoes = [50, 100, 150, 200];
@@ -72,8 +71,25 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
   };
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", padding: 2 }}>
-      <Paper elevation={3} sx={{ padding: 4, width: 400 }}>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        padding: 2,
+        width: "100%",
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          padding: 4,
+          width: "100%",
+          maxWidth: 800,
+          boxSizing: "border-box",
+        }}
+      >
         <form onSubmit={handleSubmit}>
           <TextField
             select
@@ -92,7 +108,7 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
               </MenuItem>
             ))}
           </TextField>
-
+  
           <TextField
             select
             label="Horário de Início"
@@ -110,7 +126,7 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
               </MenuItem>
             ))}
           </TextField>
-
+  
           <TextField
             select
             label="Turmas"
@@ -128,7 +144,7 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
               </MenuItem>
             ))}
           </TextField>
-
+  
           <TextField
             select
             label="Salas"
@@ -146,7 +162,7 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
               </MenuItem>
             ))}
           </TextField>
-
+  
           <TextField
             select
             label="Duração (minutos)"
@@ -164,7 +180,7 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
               </MenuItem>
             ))}
           </TextField>
-
+  
           <Button type="submit" variant="contained" color="primary" sx={{ mt: 2, width: "100%" }}>
             Enviar
           </Button>

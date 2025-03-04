@@ -1,4 +1,4 @@
-import { Container, Typography } from "@mui/material";
+import { Card, CardContent, Container, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import AulaService from "../../../services/aulaService";
@@ -14,34 +14,34 @@ function AulaCadastrar() {
   const [turmas, setTurmas] = useState([])
   const [salas, setSalas] = useState([])
 
-  useEffect(()=>{
+  useEffect(() => {
 
-    async function fetchTurmas(){
-      try{
+    async function fetchTurmas() {
+      try {
         const response = await TurmaService.listarTurmas();
         setTurmas(response);
-      // eslint-disable-next-line no-unused-vars
-      }catch(error){
+        // eslint-disable-next-line no-unused-vars
+      } catch (error) {
         toast.error('Erro ao carregar turmas')
       }
     } fetchTurmas();
 
-  },[])
+  }, [])
 
-  
-  useEffect(()=>{
 
-    async function fetchSalas(){
-      try{
+  useEffect(() => {
+
+    async function fetchSalas() {
+      try {
         const response = await SalaService.listarSalas();
         setSalas(response);
-      // eslint-disable-next-line no-unused-vars
-      }catch(error){
+        // eslint-disable-next-line no-unused-vars
+      } catch (error) {
         toast.error('Erro ao carregar salas')
       }
     } fetchSalas();
 
-  },[])
+  }, [])
 
 
 
@@ -77,10 +77,14 @@ function AulaCadastrar() {
 
   return (
     <Container sx={{ mt: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        Agendar Aula
-      </Typography>
-      <AulaForm initialData={{}} onSubmit={handleSubmit} turmas={turmas} salas={salas}/>
+      <Card sx={{ marginBottom: 3, padding: 2 }}>
+        <CardContent>
+          <Typography variant="h4" gutterBottom>
+            Agendar Aula
+          </Typography>
+        </CardContent>
+      </Card>
+      <AulaForm initialData={{}} onSubmit={handleSubmit} turmas={turmas} salas={salas} />
     </Container>
   );
 };

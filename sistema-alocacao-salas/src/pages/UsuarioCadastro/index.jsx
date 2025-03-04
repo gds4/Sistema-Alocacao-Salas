@@ -31,8 +31,7 @@ function CadastrarUsuario() {
 
     const rolesMap = {
         ROLE_PROFESSOR: 1,
-        ROLE_ALUNO: 2,
-        ROLE_ADMIN: 3,
+        ROLE_ADMIN: 2,
     };
 
     const handleSubmit = async (e) => {
@@ -126,7 +125,6 @@ function CadastrarUsuario() {
                             required
                         >
                             <MenuItem value="ROLE_PROFESSOR">Professor</MenuItem>
-                            <MenuItem value="ROLE_ALUNO">Aluno</MenuItem>
                             <MenuItem value="ROLE_ADMIN">Admin</MenuItem>
                         </TextField>
 
