@@ -35,7 +35,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_DATASOURCE_URL=jdbc:postgresql://usuarios-db:5432/usuarios_db
       - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=Admingdpg12
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_PORT=5672
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8081/eureka
@@ -54,7 +54,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_DATASOURCE_URL=jdbc:postgresql://salas-db:5432/salas_db
       - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=Admingdpg12
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_PORT=5672
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8081/eureka
@@ -73,7 +73,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_DATASOURCE_URL=jdbc:postgresql://aulas-db:5432/aulas_db
       - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=Admingdpg12
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_PORT=5672
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8081/eureka 
@@ -92,7 +92,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_DATASOURCE_URL=jdbc:postgresql://turmas-db:5432/turmas_db
       - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=Admingdpg12
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_PORT=5672
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8081/eureka 
@@ -111,7 +111,7 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_DATASOURCE_URL=jdbc:postgresql://notificacoes-db:5432/notificacoes_db
       - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=Admingdpg12
+      - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_PORT=5672
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8081/eureka 
@@ -129,7 +129,7 @@ services:
     environment:
       POSTGRES_DB: usuarios_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Admingdpg12
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5433:5432"
     volumes:
@@ -144,7 +144,7 @@ services:
     environment:
       POSTGRES_DB: salas_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Admingdpg12
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5434:5432"
     volumes:
@@ -159,7 +159,7 @@ services:
     environment:
       POSTGRES_DB: aulas_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Admingdpg12
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5435:5432"
     volumes:
@@ -174,7 +174,7 @@ services:
     environment:
       POSTGRES_DB: turmas_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Admingdpg12
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5436:5432"
     volumes:
@@ -189,7 +189,7 @@ services:
     environment:
       POSTGRES_DB: notificacoes_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Admingdpg12
+      POSTGRES_PASSWORD: postgres
     ports:
       - "5437:5432"
     volumes:
