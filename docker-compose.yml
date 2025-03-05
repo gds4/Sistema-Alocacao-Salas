@@ -1,0 +1,230 @@
+version: '3.8'
+
+services:
+  # Eureka Server (porta fixa 8081)
+  eureka:
+    build: ./eurekaServer
+    container_name: eureka
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8081/eureka
+    networks:
+      - backend
+
+  # Gateway (porta fixa 8082)
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8081/eureka 
+    depends_on:
+      - eureka
+    networks:
+      - backend
+
+  # Microsserviço: usuários
+  usuarios-ms:
+    build: ./usuarios-ms
+    container_name: usuarios-ms
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://usuarios-db:5432/usuarios_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Admingdpg12
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8081/eureka
+    depends_on:
+      - eureka
+      - usuarios-db
+      - rabbitmq
+    networks:
+      - backend
+
+  # Microsserviço: salas
+  salas-ms:
+    build: ./salas-ms
+    container_name: salas-ms
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://salas-db:5432/salas_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Admingdpg12
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8081/eureka
+    depends_on:
+      - eureka
+      - salas-db
+      - rabbitmq
+    networks:
+      - backend
+
+  # Microsserviço: aulas
+  aulas-ms:
+    build: ./aulas-ms
+    container_name: aulas-ms
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://aulas-db:5432/aulas_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Admingdpg12
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8081/eureka 
+    depends_on:
+      - eureka
+      - aulas-db
+      - rabbitmq
+    networks:
+      - backend
+
+  # Microsserviço: turmas
+  turmas-ms:
+    build: ./turmas-microservice
+    container_name: turmas-ms
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://turmas-db:5432/turmas_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Admingdpg12
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8081/eureka 
+    depends_on:
+      - eureka
+      - turmas-db
+      - rabbitmq
+    networks:
+      - backend
+
+  # Microsserviço: notificações
+  notificacoes-ms:
+    build: ./notificacoes-ms
+    container_name: notificacoes-ms
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://notificacoes-db:5432/notificacoes_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Admingdpg12
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka:8081/eureka 
+    depends_on:
+      - eureka
+      - notificacoes-db
+      - rabbitmq
+    networks:
+      - backend
+
+  # Banco de Dados: usuários
+  usuarios-db:
+    image: postgres:13
+    container_name: usuarios-db
+    environment:
+      POSTGRES_DB: usuarios_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Admingdpg12
+    ports:
+      - "5433:5432"
+    volumes:
+      - usuarios_db_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  # Banco de Dados: salas
+  salas-db:
+    image: postgres:13
+    container_name: salas-db
+    environment:
+      POSTGRES_DB: salas_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Admingdpg12
+    ports:
+      - "5434:5432"
+    volumes:
+      - salas_db_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  # Banco de Dados: aulas
+  aulas-db:
+    image: postgres:13
+    container_name: aulas-db
+    environment:
+      POSTGRES_DB: aulas_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Admingdpg12
+    ports:
+      - "5435:5432"
+    volumes:
+      - aulas_db_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  # Banco de Dados: turmas
+  turmas-db:
+    image: postgres:13
+    container_name: turmas-db
+    environment:
+      POSTGRES_DB: turmas_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Admingdpg12
+    ports:
+      - "5436:5432"
+    volumes:
+      - turmas_db_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  # Banco de Dados: notificações
+  notificacoes-db:
+    image: postgres:13
+    container_name: notificacoes-db
+    environment:
+      POSTGRES_DB: notificacoes_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Admingdpg12
+    ports:
+      - "5437:5432"
+    volumes:
+      - notificacoes_db_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  # RabbitMQ (Mensageria)
+  rabbitmq:
+    image: rabbitmq:4.0-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - backend
+
+  # Frontend (React/Vite na porta 5173)
+  frontend:
+    build: ./sistema-alocacao-salas
+    container_name: frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - gateway
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  usuarios_db_data:
+  salas_db_data:
+  aulas_db_data:
+  turmas_db_data:
+  notificacoes_db_data:
