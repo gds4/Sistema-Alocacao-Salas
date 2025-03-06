@@ -89,7 +89,7 @@ function Turmas() {
                 </CardContent>
             </Card>
 
-            <TableContainer component={Paper} sx={{ marginTop: 4, overflowX: 'auto' }}>
+            {turmas.length > 0 ? <TableContainer component={Paper} sx={{ marginTop: 4, overflowX: 'auto' }}>
                 <Table sx={{ '& td, & th': { textAlign: 'center' } }}>
                     <TableHead>
                         <TableRow>
@@ -137,6 +137,10 @@ function Turmas() {
                     </TableBody>
                 </Table>
             </TableContainer>
+                : <Box sx={{ width: '100%', boxShadow: 2, borderRadius: turmas.length > 0 ? 2 : 0, backgroundColor: '#fff' }}>
+                    <Typography variant="body1" align="center">Nenhuma turma cadastrada.</Typography>
+                </Box>
+            }
         </Container>
     );
 }

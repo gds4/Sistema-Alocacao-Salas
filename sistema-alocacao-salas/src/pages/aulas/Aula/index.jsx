@@ -170,7 +170,7 @@ function Aula() {
       <Card sx={{ marginBottom: 3, padding: 2 }}>
         <CardContent>
           <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Typography variant="h4">Minhas Aulas</Typography>
+            <Typography variant="h4">{ isAdmin ? 'Aulas Cadastradas' : 'Minhas Aulas' }</Typography>
             <Button
               variant="contained"
               color="primary"

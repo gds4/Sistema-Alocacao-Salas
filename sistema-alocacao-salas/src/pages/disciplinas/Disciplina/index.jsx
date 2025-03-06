@@ -69,7 +69,7 @@ function Disciplinas() {
                 </CardContent>
             </Card>
 
-            <TableContainer component={Paper} sx={{ marginTop: 4, overflowX: 'auto' }}>
+            {disciplinas.length > 0 ?<TableContainer component={Paper} sx={{ marginTop: 4, overflowX: 'auto' }}>
                 <Table sx={{ '& td, & th': { textAlign: 'center' } }}>
                     <TableHead>
                         <TableRow>
@@ -107,6 +107,10 @@ function Disciplinas() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            :<Box sx={{ width: '100%', boxShadow: 2, borderRadius: disciplinas.length > 0 ? 2 : 0, backgroundColor: '#fff' }}>
+                <Typography variant="body1" align="center">Nenhuma disciplina cadastrada.</Typography>
+            </Box>
+            }
         </Container>
     );
 }
