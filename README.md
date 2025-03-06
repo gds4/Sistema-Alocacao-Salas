@@ -165,7 +165,7 @@ http://localhost:8082/<microsservico>/swagger-ui.html
 Exemplo para Usuários:
 
 ```
-http://localhost:8082/usuarios-api/swagger-ui.html
+http://localhost:8082/usuarios-ms/swagger-ui.html
 ```
 
 ## Estrutura do Projeto
