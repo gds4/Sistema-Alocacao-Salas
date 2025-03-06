@@ -39,7 +39,6 @@ Sistema distribuído para gerenciamento de alocação de salas em instituições
 
 **turmas-ms**
 - Spring Data JPA
-- Spring JDBC
 - Spring Validation
 - Spring Security
 - Spring Web
