@@ -145,6 +145,15 @@ Se desejar executar os microsserviços localmente, siga os passos abaixo:
    ```
 3. Inicie os microsserviços individualmente via IDE ou terminal com `mvn spring-boot:run`.
 
+## Acesso ao Sistema
+
+Para acessar o sistema utilize as seguintes credenciais:
+
+Usuário Admin:
+
+- login: projetopweb091@gmail.com
+- senha: 123456
+
 ## Documentação da API
 
 Acesse via Swagger UI após iniciar os serviços:
