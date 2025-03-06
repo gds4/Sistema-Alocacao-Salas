@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { TextField, MenuItem, Button, Box, Paper } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const defaultFormData = {
   diaSemana: "",
@@ -8,6 +8,7 @@ const defaultFormData = {
   turmaId: "",
   salaId: "",
   duracao: 50,
+  professorId: "",
 };
 
 const diasSemana = [
@@ -21,13 +22,16 @@ const diasSemana = [
 const duracoes = [50, 100, 150, 200];
 const horarios = ["17:00", "17:50", "18:40", "19:30", "20:20", "21:10"];
 
-function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
-  const [formData, setFormData] = useState(initialData);
+function AulaForm({ formData = defaultFormData, onChange, turmas, salas, professores, isAdmin, onSubmit }) {
+
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
-    setFormData(initialData);
-  }, [initialData]);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    onChange(name, value);
+    setErrors((prev) => ({ ...prev, [name]: undefined }));
+  };
 
   const validate = () => {
     const newErrors = {};
@@ -36,6 +40,7 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
       : null;
     const fimEmMinutos = inicioEmMinutos + formData.duracao;
 
+    if (isAdmin && !formData.professorId) newErrors.professorId = "Campo obrigatório";
     if (!formData.diaSemana) newErrors.diaSemana = "Campo obrigatório";
     if (!formData.horarioInicio) newErrors.horarioInicio = "Campo obrigatório";
     if (!formData.turmaId) newErrors.turmaId = "Campo obrigatório";
@@ -57,11 +62,7 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: undefined }));
-  };
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -90,7 +91,29 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
           boxSizing: "border-box",
         }}
       >
+
+
         <form onSubmit={handleSubmit}>
+
+          {isAdmin && (
+            <TextField
+              select
+              label="Professor"
+              name="professorId"
+              value={formData.professorId || ""}
+              onChange={handleChange}
+              fullWidth
+              margin="normal"
+              error={!!errors.professorId}
+              helperText={errors.professorId}
+            >
+              {professores.map((professor) => (
+                <MenuItem key={professor.id} value={professor.id}>
+                  {professor.nome}
+                </MenuItem>
+              ))}
+            </TextField>
+          )}
           <TextField
             select
             label="Dia da Semana"
@@ -108,7 +131,7 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
               </MenuItem>
             ))}
           </TextField>
-  
+
           <TextField
             select
             label="Horário de Início"
@@ -126,7 +149,7 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
               </MenuItem>
             ))}
           </TextField>
-  
+
           <TextField
             select
             label="Turmas"
@@ -144,7 +167,7 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
               </MenuItem>
             ))}
           </TextField>
-  
+
           <TextField
             select
             label="Salas"
@@ -162,7 +185,7 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
               </MenuItem>
             ))}
           </TextField>
-  
+
           <TextField
             select
             label="Duração (minutos)"
@@ -180,7 +203,7 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
               </MenuItem>
             ))}
           </TextField>
-  
+
           <Button type="submit" variant="contained" color="primary" sx={{ mt: 2, width: "100%" }}>
             Enviar
           </Button>
@@ -190,13 +213,16 @@ function AulaForm ({ initialData = defaultFormData, turmas, salas, onSubmit }) {
   );
 };
 AulaForm.propTypes = {
-  initialData: PropTypes.shape({
+
+  formData: PropTypes.shape({
     diaSemana: PropTypes.string,
     horarioInicio: PropTypes.string,
     turmaId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     salaId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     duracao: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    professorId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   }),
+  onChange: PropTypes.func.isRequired,
   turmas: PropTypes.arrayOf(
     PropTypes.shape({
       turmaId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -211,6 +237,8 @@ AulaForm.propTypes = {
     })
   ).isRequired,
   onSubmit: PropTypes.func.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
+  professores: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number, nome: PropTypes.string })),
 };
 
 export default AulaForm;

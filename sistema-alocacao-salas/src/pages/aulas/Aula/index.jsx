@@ -26,6 +26,7 @@ function Aula() {
   const [aulas, setAulas] = useState([]);
   const [turmas, setTurmas] = useState([])
   const [salas, setSalas] = useState([])
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const usuario = JSON.parse(localStorage.getItem('usuario'));
@@ -33,16 +34,23 @@ function Aula() {
       toast.error('Ocorreu um erro ao buscar dados, Faça login novamente');
       return;
     }
-    async function fetchAulasProfessor() {
+    
+    async function fetchAulas() {
       try {
-        const response = await AulaService.listarAulasPorProfessor(usuario.id);
-        setAulas(response)
+        const isAdmin = usuario.roles.some(role => role.descricao === "ROLE_ADMIN");
+        let response = isAdmin 
+          ? await AulaService.listarTodasAulas()
+          : await AulaService.listarAulasPorProfessor(usuario.id);
+        
+        setAulas(response);
+        setIsAdmin(isAdmin);
       } catch (error) {
-        console.error('Ocorreu um erro ao buscar dados', error)
+        console.error('Ocorreu um erro ao buscar dados', error);
       }
-
-    } fetchAulasProfessor();
-  }, [])
+    }
+    
+    fetchAulas();
+  }, []);
 
   useEffect(() => {
 
@@ -100,6 +108,17 @@ function Aula() {
             {horario}
           </TableCell>
           {diasSemana.map((dia) => {
+            if (isAdmin) {
+              return (
+                <TableCell 
+                  key={`${dia}-${horario}`} 
+                  sx={{ verticalAlign: 'middle', textAlign: 'center', maxWidth: '60px' }}
+                >
+                  -
+                </TableCell>
+              );
+            }
+
             const aula = aulas.find((a) => {
               const horarioInicio = parseTime(a.horarioInicio.slice(0, 5));
               const horarioFim = new Date(horarioInicio.getTime() + a.duracao * 60000);
@@ -111,30 +130,28 @@ function Aula() {
               );
             });
 
-            if (aula) {
-              const codigoDisciplina = getDisciplinaByTurmaId(aula.turmaId);
-              return (
-                <TableCell key={`${dia}-${horario}`} sx={{ verticalAlign: 'middle', textAlign: 'center', maxWidth: '60px' }}>
+            return (
+              <TableCell 
+                key={`${dia}-${horario}`} 
+                sx={{ verticalAlign: 'middle', textAlign: 'center', maxWidth: '60px' }}
+              >
+                {aula ? (
                   <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-                    <span>{codigoDisciplina}</span>
+                    <span>{getDisciplinaByTurmaId(aula.turmaId)}</span>
                     <span style={{ fontSize: '0.8em', marginTop: 2 }}>
                       {getSalaByAula(aula.salaId)}
                     </span>
                   </div>
-                </TableCell>
-              );
-            } else {
-              return (
-                <TableCell key={`${dia}-${horario}`} sx={{ verticalAlign: 'middle', textAlign: 'center', maxWidth: '60px' }}>
-                  -
-                </TableCell>
-              );
-            }
+                ) : (
+                  '-'
+                )}
+              </TableCell>
+            );
           })}
         </TableRow>
       );
     });
-  };
+  }
 
   const handleDelete = async (id) => {
     try {

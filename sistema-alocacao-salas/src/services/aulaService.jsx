@@ -33,7 +33,7 @@ const AulaService = {
 
   listarTodasAulas: async () => {
     try {
-      const response = await api.get(AULA_ENDPOINT);
+      const response = await api.get(`${AULA_ENDPOINT}?semestre=${SemestreService.semestreAtual}`);
       return response.data;
     } catch (error) {
       this.handleError(error);

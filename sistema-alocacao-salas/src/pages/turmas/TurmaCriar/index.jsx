@@ -13,23 +13,31 @@ import { toast } from "react-toastify";
 import TurmaService from "../../../services/turmaService";
 import DisciplinaService from "../../../services/disciplinaService";
 import { SemestreService } from "../../../services/semestreService";
+import UsuarioService from "../../../services/usuarioService";
 
 function CriarTurma() {
     const [semestre] = useState(SemestreService.semestreAtual);
     const [idProfessor, setIdProfessor] = useState("");
     const [disciplinaDTO, setDisciplinaDTO] = useState(null);
     const [disciplinas, setDisciplinas] = useState([]);
+    const [professores, setProfessores] = useState([]);
+    const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const carregarDadosIniciais = async () => {
             try {
                 const usuario = JSON.parse(localStorage.getItem("usuario"));
-
                 setIdProfessor(usuario.id);
-
-                const response = await DisciplinaService.listarDisciplinas();
-                setDisciplinas(response);
+                setIsAdmin(usuario.roles.some(role => role.descricao === "ROLE_ADMIN"));
+                
+                if (usuario.roles.some(role => role.descricao === "ROLE_ADMIN")) {
+                    const responseProfessores = await UsuarioService.listarUsuariosComRoleProfessor();
+                    setProfessores(responseProfessores);
+                }
+                
+                const responseDisciplinas = await DisciplinaService.listarDisciplinas();
+                setDisciplinas(responseDisciplinas);
             } catch (error) {
                 console.error(error);
                 toast.error("Erro ao carregar dados iniciais!");
@@ -49,7 +57,7 @@ function CriarTurma() {
             await TurmaService.cadastrarTurma(turmaDTO);
             toast.success("Turma criada com sucesso!");
             navigate("/turmas");
-            // eslint-disable-next-line no-unused-vars
+        // eslint-disable-next-line no-unused-vars
         } catch (error) {
             toast.error("Erro ao criar turma!");
         }
@@ -89,6 +97,24 @@ function CriarTurma() {
                             />
                         )}
                     />
+
+                    {isAdmin && (
+                        <Autocomplete
+                            options={professores}
+                            getOptionLabel={(option) => `${option.nome} (ID: ${option.id})`}
+                            value={professores.find(prof => prof.id === idProfessor) || null}
+                            onChange={(_, newValue) => setIdProfessor(newValue ? newValue.id : "")}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Selecione o Professor"
+                                    margin="normal"
+                                    fullWidth
+                                    required
+                                />
+                            )}
+                        />
+                    )}
 
                     <Box display="flex" justifyContent="flex-end" marginTop={3}>
                         <Button type="submit" variant="contained" color="primary" style={{ marginRight: '8px' }}>Salvar</Button>

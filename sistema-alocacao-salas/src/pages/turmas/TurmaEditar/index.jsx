@@ -12,6 +12,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import TurmaService from "../../../services/turmaService";
 import DisciplinaService from "../../../services/disciplinaService";
+import UsuarioService from "../../../services/usuarioService";
 
 function EditarTurma() {
     const navigate = useNavigate();
@@ -19,27 +20,32 @@ function EditarTurma() {
     const { turma } = location.state || {};
 
     const [semestre] = useState(turma?.semestre || "");
-    const [idProfessor, setIdProfessor] = useState("");
+    const [idProfessor, setIdProfessor] = useState(turma?.idProfessor || "");
     const [disciplinaDTO, setDisciplinaDTO] = useState(turma?.disciplinaDTO || null);
     const [disciplinas, setDisciplinas] = useState([]);
+    const [professores, setProfessores] = useState([]);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         const carregarDadosIniciais = async () => {
             try {
                 const usuario = JSON.parse(localStorage.getItem("usuario"));
-
-                const isAdmin = usuario.roles.find(role => role.descricao === 'ROLE_ADMIN');
-
-                if (turma && turma.idProfessor !== usuario.id && !isAdmin) {
+                const admin = usuario.roles.some(role => role.descricao === "ROLE_ADMIN");
+                setIsAdmin(admin);
+                
+                if (turma && turma.idProfessor !== usuario.id && !admin) {
                     toast.error("Você não tem permissão para editar esta turma!");
                     navigate("/turmas");
                     return;
                 }
-
-                setIdProfessor(usuario.id);
-
-                const response = await DisciplinaService.listarDisciplinas();
-                setDisciplinas(response);
+                
+                if (admin) {
+                    const responseProfessores = await UsuarioService.listarUsuariosComRoleProfessor();
+                    setProfessores(responseProfessores);
+                }
+                
+                const responseDisciplinas = await DisciplinaService.listarDisciplinas();
+                setDisciplinas(responseDisciplinas);
             } catch (error) {
                 console.error(error);
                 toast.error("Erro ao carregar dados iniciais!");
@@ -56,6 +62,7 @@ function EditarTurma() {
         }
         try {
             const turmaDTO = { id: turma.id, semestre, idProfessor, disciplinaDTO };
+            console.log(turmaDTO)
             await TurmaService.editarTurma(turma.id, turmaDTO);
             toast.success("Turma atualizada com sucesso!");
             navigate("/turmas");
@@ -99,6 +106,24 @@ function EditarTurma() {
                             />
                         )}
                     />
+
+                    {isAdmin && (
+                        <Autocomplete
+                            options={professores}
+                            getOptionLabel={(option) => `${option.nome} (ID: ${option.id})`}
+                            value={professores.find(prof => prof.id === idProfessor) || null}
+                            onChange={(_, newValue) => setIdProfessor(newValue ? newValue.id : "")}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Selecione o Professor"
+                                    margin="normal"
+                                    fullWidth
+                                    required
+                                />
+                            )}
+                        />
+                    )}
 
                     <Box display="flex" justifyContent="flex-end" marginTop={3}>
                         <Button type="submit" variant="contained" color="primary" style={{ marginRight: '8px' }}>Salvar</Button>
