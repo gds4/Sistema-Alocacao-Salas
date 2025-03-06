@@ -79,8 +79,8 @@ public class AulaController {
   @Operation(summary = "Listar Aulas", description = "Lista as aulas do sistema")
   @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDTO.class)))
   @GetMapping
-  public ResponseEntity<List<AulaResponseDTO>> listarTodasAulas() {
-    List<AulaResponseDTO> aulas = this.aulaService.listarTodasAulas();
+  public ResponseEntity<List<AulaResponseDTO>> listarTodasAulas(@RequestParam(required = false) String semestre) {
+    List<AulaResponseDTO> aulas = this.aulaService.listarTodasAulas(semestre);
     return ResponseEntity.ok(aulas);
   }
 

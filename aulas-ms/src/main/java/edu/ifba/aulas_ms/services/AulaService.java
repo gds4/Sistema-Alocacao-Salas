@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import edu.ifba.aulas_ms.dtos.AulaDTO;
@@ -151,6 +153,11 @@ public class AulaService {
       }
     }
 
+    var authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean isAdmin = authentication.getAuthorities().stream()
+				.map(GrantedAuthority::getAuthority)
+				.anyMatch(role -> role.equals("ROLE_ADMIN"));
+
     Aula aula = aulaOptional.get();
 
     aula.setTurmaId(aulaDTO.turmaId());
@@ -158,6 +165,8 @@ public class AulaService {
     aula.setDuracao(aulaDTO.duracao());
     aula.setSalaId(aulaDTO.salaId());
     aula.setHorarioInicio(aulaDTO.horarioInicio());
+
+		if (isAdmin) aula.setProfessorId(aulaDTO.professorId());
 
     aula = aulaRepository.save(aula);
 
@@ -171,10 +180,18 @@ public class AulaService {
     aulaRepository.deleteById(id);
   }
 
-  public List<AulaResponseDTO> listarTodasAulas() {
-    return aulaRepository.findAll().stream()
+  public List<AulaResponseDTO> listarTodasAulas(String semestre) {
+
+    List<AulaResponseDTO> aulasResponse = aulaRepository.findAll().stream()
         .map(AulaResponseDTO::new)
         .collect(Collectors.toList());
+    if(semestre != null){
+      aulasResponse =  aulasResponse.stream()
+                                    .filter(aula -> aula.semestre().equals(semestre))
+                                    .collect(Collectors.toList());
+    }
+
+    return aulasResponse;
   }
 
   public List<AulaResponseDTO> listarAulasPorSala(Long salaId, String semestre) {
